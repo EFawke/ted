@@ -1,0 +1,145 @@
+.my_promise {
+  max-width: 350px;
+}
+
+.navigation_button {
+  text-decoration: none;
+}
+
+.nav-select,
+.nav-selected {
+  height: 1px;
+  margin-right: 1rem;
+  display: inline-flex;
+  align-content: center;
+  flex-wrap: wrap;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  /* Smooth transition for all animatable properties */
+}
+
+.nav-select {
+  width: 2rem;
+  /* color: #ffffff9e; */
+  /* background: #ffffff9e; */
+}
+
+.nav-selected {
+  width: 4rem;
+  /* color: white; */
+  /* background: white; */
+}
+
+
+/* .about_paragraph {
+  color: rgba(255, 255, 255, 0.73);
+} */
+
+/* .about_paragraph:hover {
+  color: white !important;
+} */
+
+.nav-container {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.socials {
+  /* color: rgba(255, 255, 255, 0.73); */
+}
+
+.socials:hover {
+  /* color: white; */
+}
+
+.icon_pos {
+  margin-top: 5px;
+  margin-left: -5px;
+}
+
+.animate_up_right {
+  animation: up-right .2s ease-out forwards;
+}
+
+@keyframes up-right {
+  from {
+    transform: translate(0px, 0px)
+  }
+
+  to {
+    transform: translate(5px, -5px)
+  }
+}
+
+.animate_down_left {
+  animation: down-left .2s ease-out forwards;
+}
+
+@keyframes down-left {
+  from {
+    transform: translate(5px, -5px)
+  }
+
+  to {
+    transform: translate(0, 0)
+  }
+}
+
+.not_selected_project {
+  background: transparent;
+  border: none;
+}
+
+.tech_stack {
+  padding: 0.2rem 1rem;
+  border-radius: 1rem;
+  background: #00808052;
+  display: flex;
+  align-items: center;
+}
+
+#weird_flex_bro {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+#left_page {
+  width: 50%;
+  position: sticky;
+  height: 100vh;
+}
+
+#right_page {
+  width: 50%;
+}
+
+@media screen and (max-width: 1167px) {
+  #left_page {
+    width: 100%;
+    position: relative;
+    height: unset;
+    padding-bottom: 0;
+  }
+  #right_page {
+    width: 100%;
+    padding-top: 0;
+  }
+  #weird_flex_bro {
+    flex-direction: column;
+    margin: 0rem 5%;
+  }
+  #nav_box {
+    display: none;
+  }
+  #links {
+    margin-top: 5rem;
+    margin-bottom: 5rem;
+    padding-bottom: 0;
+  }
+  #about > div {
+    margin-top: 0;
+  }
+}
