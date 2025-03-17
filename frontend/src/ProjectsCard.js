@@ -15,7 +15,7 @@ const Projects = (props) => {
     }
 
     return (
-        <Link href="https://evesubsystemanalysis.herokuapp.com/" target="_blank" style={{textDecoration: "none"}}>
+        <Link href="https://evesubsystemanalysis.herokuapp.com/" style={{textDecoration: "none"}}>
             <Card onMouseEnter = {selectCurrent} onMouseLeave={selectCurrent} className = {selected ? "" : "not_selected_project"}>
                 <Flex direction="row" gap="1rem" style={{padding: "0.5rem"}}>
                     <Flex ratio={16 / 9} style={{width: "25%"}} align="start">
