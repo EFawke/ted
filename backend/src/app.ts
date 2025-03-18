@@ -1,9 +1,15 @@
 import express, { Request, Response } from 'express';
+import cors from 'cors';
 const apiRouter = require('./api/apiRouter');
 const app = express();
 const path = require('path');
 
 app.use('/api', apiRouter);
+// Serve static files from public directory
+app.use(express.static('public'))
+app.use(cors());
+
+app.use('/uploads', express.static(path.join(__dirname, './public/uploads')));
 
 let port:number = process.env.PORT ? parseInt(process.env.PORT) : 8000;
 

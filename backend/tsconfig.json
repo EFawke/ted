@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "types": ["node", "multer"],
+    "typeRoots": ["node_modules/@types", "src/types"],
     /* Visit https://aka.ms/tsconfig to read more about this file */
 
     /* Projects */

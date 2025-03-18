@@ -1,8 +1,7 @@
 import "@radix-ui/themes/styles.css";
-import { Card, AspectRatio, Text, Link, Flex, Heading } from "@radix-ui/themes";
+import { Card, Text, Link, Flex } from "@radix-ui/themes";
 import { ArrowTopRightIcon } from "@radix-ui/react-icons"
 import './App.css';
-import ProjectsCard from "./ProjectsCard";
 import { useState } from "react";
 
 const BlogCard = (props) => {

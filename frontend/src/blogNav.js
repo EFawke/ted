@@ -15,7 +15,7 @@ class BlogNav extends React.Component {
     componentDidMount() {
         axios.post('/api/blog', {action: 'fetchAllPosts'})
         .then((response) => {
-            console.log(response.data);
+            // console.log(response.data);
             let blogs = [];
             for(let i = 0; i < response.data.length; i++) {
                 if(response.data[i].blockorder === 0 && response.data[i].islive == true){
@@ -35,7 +35,7 @@ class BlogNav extends React.Component {
     render() {
         return (
             <Flex direction="column" gap="4" mt="6">
-                <Heading weight="light" size="7" mb="3">/Posts</Heading>
+                <Heading weight="light" size="7" mb="3">Recent posts</Heading>
                 {this.state.posts.map((post) => {
                     return (
                         <BlogCard key={post.id} post={post} isAdmin={this.props.isAdmin}/>

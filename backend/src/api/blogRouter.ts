@@ -36,6 +36,7 @@ blogRouter.post('/', async (req, res) => {
     const id = req.body.blogId;
 
     if (action == 'create') {
+        console.log(elements);
         let id = await getMaxIdFromBlogs();
         if (id.max == null) {
             id = 1;
@@ -53,9 +54,13 @@ blogRouter.post('/', async (req, res) => {
         res.status(200).json({ message: 'Blog created' });
     }
     if (action == 'edit') {
-        let query = `DELETE FROM blog WHERE blogId = ${id
-            }`;
+        console.log("EDITING")
+        let query = `DELETE FROM blog WHERE blogId = ${id}`;
         client.query(query);
+        if(elements.length === 0){
+            res.status(200).json({ message: 'Blog edited' });
+            return;
+        }
         query = 'INSERT INTO blog (blogTitle, blogId, blockType, blockOrder, blockContent, isLive) VALUES ';
         for (let i = 0; i < elements.length; i++) {
             query += `('${title.replace(/'/g, "''")}', ${id}, '${elements[i].blocktype.replace(/'/g, "''")}', ${elements[i].blockorder}, '${elements[i].blockcontent.replace(/'/g, "''")}', ${true})`;
@@ -63,10 +68,18 @@ blogRouter.post('/', async (req, res) => {
                 query += ', ';
             }
         }
-        client.query(query);
-        res.status(200).json({ message: 'Blog edited' });
+        try {
+            console.log("trying to edit")
+            console.log(query)
+            client.query(query);
+            res.status(200).json({ message: 'Blog edited' });
+        }
+        catch (err: any) {
+            console.log(err);
+        }
     }
     if (action == 'fetchAllPosts') {
+        console.log("FETCH ALL POSTS")
         const query = 'SELECT * FROM blog';
         try {
             const result = await client
@@ -74,6 +87,7 @@ blogRouter.post('/', async (req, res) => {
             console.log(result.rows);
             res.status(200).json(result.rows);
         } catch (err: any) {
+            console.log("WHAT THE FUCKK")
             console.log(err);
         }
 
