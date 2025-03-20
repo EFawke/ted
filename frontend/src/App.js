@@ -12,8 +12,6 @@ import ReactGA from "react-ga4";
 
 const trackingId = process.env.REACT_APP_GOOGLE_ANALYTICS_ID;
 
-console.log(trackingId);
-
 function TrackPageViews() {
   const location = useLocation();
 
