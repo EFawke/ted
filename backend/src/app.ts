@@ -1,13 +1,20 @@
 import express, { Request, Response } from 'express';
 import cors from 'cors';
+import dotenv from 'dotenv';
+
+dotenv.config();
 const apiRouter = require('./api/apiRouter');
+const googleRouter = require('./auth/googleRouter');
 const app = express();
 const path = require('path');
 
+app.use(cors());
+app.use(express.json());
+
 app.use('/api', apiRouter);
+app.use('/auth/google', googleRouter);
 // Serve static files from public directory
 app.use(express.static('public'))
-app.use(cors());
 
 app.use('/uploads', express.static(path.join(__dirname, './public/uploads')));
 

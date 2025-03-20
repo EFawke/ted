@@ -5,9 +5,6 @@ import './App.css';
 import { useState } from "react";
 
 const BlogCard = (props) => {
-
-    console.log(props);
-
     const [selected, setSelected] = useState(false);
 
     const selectCurrent = () => {
@@ -25,7 +22,7 @@ const BlogCard = (props) => {
                 <Flex direction="row" gap="1rem" style={{padding: "0.5rem"}} width="100%">
                     <Flex direction="column" align="start" width="100%">
                         <Flex>
-                            <Link mb="2" size="4" weight="medium">{props.post.blogtitle}</Link>
+                            <Text mb="2" size="4" weight="medium">{props.post.blogtitle}</Text>
                             <ArrowTopRightIcon className={selected ? "icon_pos animate_up_right" : "icon_pos animate_down_left"} height="15" width="15" style={{paddingLeft: ".5rem"}}/>
                         </Flex>
                         <Flex maxWidth="100%">

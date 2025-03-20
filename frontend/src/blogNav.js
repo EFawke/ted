@@ -29,9 +29,6 @@ class BlogNav extends React.Component {
         });
     }
 
-
-
-
     render() {
         return (
             <Flex direction="column" gap="4" mt="6">
