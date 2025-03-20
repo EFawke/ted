@@ -4,6 +4,8 @@ import { Box, Heading, Container, TextArea, TextField, Flex, Button, DropdownMen
 import { PlusIcon, MinusIcon } from "@radix-ui/react-icons";
 import axios from 'axios';
 import AddImageButton from './AddImageButton';
+import Header from './Header.js';
+import { AuthProvider } from './AuthContext.js';
 
 function EditPage({ isAdmin }) {
   const { id } = useParams();
@@ -108,9 +110,9 @@ function EditPage({ isAdmin }) {
 
   return (
     <Container size="4">
-      <Flex>
-        <Link href="/">Take me home!</Link>
-      </Flex>
+      <AuthProvider>
+        <Header />
+      </AuthProvider>
       <Flex direction="column" gap="4">
         <Flex width="100%" direction="row" mt="8" mb="5" align="end" style={{ justifyContent: 'space-between' }}>
           <Heading size="8" weight="bold">{id ? `Edit Post: ${id}` : 'Create New Post'}</Heading>

@@ -4,6 +4,8 @@ import { Box, Heading, Container, Text, AspectRatio, TextArea, Flex, Link } from
 import { PlusIcon, MinusIcon } from "@radix-ui/react-icons";
 import axios from 'axios';
 import AddImageButton from './AddImageButton';
+import Header from './Header.js';
+import { AuthProvider } from './AuthContext.js';
 
 function ViewPage() {
     const { id } = useParams();
@@ -31,19 +33,17 @@ function ViewPage() {
 
     return (
         <Container size="4">
-            <Flex>
-                <Link href="/">Take me home!</Link>
-            </Flex>
+            <AuthProvider>
+              <Header />
+            </AuthProvider>
             <Flex direction="column" gap="4">
-                <Flex width="100%" direction="row" mt="8" mb="5" align="end" style={{ justifyContent: 'space-between' }}>
-                </Flex>
-                <Heading size="8" weight="bold">{title}</Heading>
+                <Heading size="9" weight="bold">{title}</Heading>
                 <Flex direction="column" gap="4">
                     {elements.map((element, index) => (
                         console.log(element),
                         <div key={index}>
-                            {element.blocktype === 'text' ? <Flex><Text>{element.blockcontent}</Text></Flex> : null}
-                            {element.blocktype === 'image' ? <AspectRatio>
+                            {element.blocktype === 'text' ? <Flex><Text size="7">{element.blockcontent}</Text></Flex> : null}
+                            {element.blocktype === 'image' ? 
                             <img 
                                 src={element.blockcontent}
                                 style={{
@@ -51,7 +51,7 @@ function ViewPage() {
                                     width: "100%",
                                     borderRadius: "var(--radius-2)",
                                 }}
-                            ></img></AspectRatio> : null}
+                            ></img> : null}
                         </div>
                     ))}
                 </Flex>

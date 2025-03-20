@@ -3,6 +3,7 @@ import { Box, Container, Flex, Section, Heading, Text, Card } from "@radix-ui/th
 import "./App.css";
 import BlogCard from "./blogCard";
 import axios from 'axios';
+import BlogNavHeader from "./blogNavHeader";
 
 class BlogNav extends React.Component {
     constructor(props) {
@@ -32,7 +33,7 @@ class BlogNav extends React.Component {
     render() {
         return (
             <Flex direction="column" gap="4" mt="6">
-                <Heading weight="light" size="7" mb="3">Recent posts</Heading>
+                <BlogNavHeader />
                 {this.state.posts.map((post) => {
                     return (
                         <BlogCard key={post.id} post={post} isAdmin={this.props.isAdmin}/>

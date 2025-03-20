@@ -1,12 +1,15 @@
 import express, { Request, Response } from 'express';
 import cors from 'cors';
+import path from 'path';
 import dotenv from 'dotenv';
+// app.ts
+import googleRouter from './auth/googleRouter';
 
 dotenv.config();
 const apiRouter = require('./api/apiRouter');
-const googleRouter = require('./auth/googleRouter');
+// const googleRouter = require('./auth/googleRouter');
 const app = express();
-const path = require('path');
+// const path = require('path');
 
 app.use(cors());
 app.use(express.json());

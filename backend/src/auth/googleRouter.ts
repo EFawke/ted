@@ -1,13 +1,18 @@
-import express from 'express';
-const googleRouter = express.Router();
+import express, { Request, Response } from 'express';
 import { OAuth2Client } from 'google-auth-library';
+import jwt from 'jsonwebtoken';
 
+const googleRouter = express.Router();
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 googleRouter.post('/', async (req: any, res: any) => {
   try {
     const { token } = req.body;
     
+    if (!token) {
+      return res.status(400).json({ message: 'Missing token' });
+    }
+
     const ticket = await client.verifyIdToken({
       idToken: token,
       audience: process.env.GOOGLE_CLIENT_ID!,
@@ -19,26 +24,25 @@ googleRouter.post('/', async (req: any, res: any) => {
       return res.status(401).json({ message: 'Invalid token' });
     }
 
-    // Here you would typically:
-    // 1. Check if user exists in your DB
-    // 2. Create new user if doesn't exist
-    // 3. Create session/JWT token
-    // 4. Send back user data and token
+    const jwtToken = jwt.sign(
+      { userId: payload.sub, email: payload.email, name: payload.name },
+      process.env.JWT_SECRET!,
+      { expiresIn: '1h' }
+    );
 
-    const user = {
-      id: payload.sub,
-      email: payload.email,
-      name: payload.name,
-      picture: payload.picture,
-    };
-
-    console.log('User:', user);
-
-    res.status(200).json(user);
+    res.status(200).json({
+      user: {
+        id: payload.sub,
+        email: payload.email,
+        name: payload.name,
+        picture: payload.picture
+      },
+      token: jwtToken
+    });
   } catch (error) {
-    console.error('Error verifying Google token:', error);
-    res.status(401).json({ message: 'Authentication failed' });
+    console.error('Error:', error);
+    res.status(500).json({ message: 'Authentication failed' });
   }
 });
 
-module.exports = googleRouter;
+export default googleRouter;

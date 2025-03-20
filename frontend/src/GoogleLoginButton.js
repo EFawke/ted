@@ -1,35 +1,23 @@
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
 import React from 'react';
+import { useAuth } from './AuthContext.js';
+
 
 const GoogleLoginButton = () => {
+  const { login } = useAuth();
+
   const responseMessage = async (response) => {
-    const token = response.credential;
-    
     try {
       const { data } = await axios.post(
         'http://localhost:8000/auth/google',
-        { token },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          }
-        }
+        { token: response.credential }
       );
 
-      console.log('Login successful, user data:', data);
-      
-      // Store the JWT token and user data
-      localStorage.setItem('authToken', data.token);
-      localStorage.setItem('user', JSON.stringify(data.user));
-      
-      // TODO: Add your state management here (context, redux, etc)
-      
+      login(data.user, data.token);
+      window.location.reload();
     } catch (error) {
       console.error('Login failed:', error);
-      if (axios.isAxiosError(error)) {
-        console.error('Server response:', error.response?.data);
-      }
     }
   };
 
