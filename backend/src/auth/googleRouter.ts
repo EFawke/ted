@@ -35,8 +35,6 @@ googleRouter.post('/', async (req: any, res: any) => {
       { expiresIn: '1h' }
     );
 
-    // console.log(verifyAdmin(payload.email));
-
     res.status(200).json({
       user: {
         id: payload.sub,

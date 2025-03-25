@@ -36,43 +36,53 @@ blogRouter.post('/', async (req, res) => {
     const id = req.body.blogId;
 
     if (action == 'create') {
+        const headerImage = req.body.headerImage || '';
+        const tags = req.body.tags || [];
+        
         let id = await getMaxIdFromBlogs();
-        if (id.max == null) {
-            id = 1;
-        } else {
-            id = Number(id.max) + 1;
-        }
-        let query = 'INSERT INTO blog (blogTitle, blogId, blockType, blockOrder, blockContent, isLive) VALUES ';
+        id = id.max ? Number(id.max) + 1 : 1;
+        
+        // Add headerImage and tags to the insert
+        let query = 'INSERT INTO blog (blogTitle, blogId, blockType, blockOrder, blockContent, isLive, headerImage, tags) VALUES ';
         for (let i = 0; i < elements.length; i++) {
-            query += `('${title.replace(/'/g, "''")}', ${id}, '${elements[i].blocktype.replace(/'/g, "''")}', ${elements[i].blockorder}, '${elements[i].blockcontent.replace(/'/g, "''")}', ${true})`;
-            if (i != elements.length - 1) {
-                query += ', ';
-            }
+            query += `(
+                '${title.replace(/'/g, "''")}', 
+                ${id}, 
+                '${elements[i].blocktype.replace(/'/g, "''")}', 
+                ${elements[i].blockorder}, 
+                '${elements[i].blockcontent.replace(/'/g, "''")}', 
+                ${true},
+                '${headerImage.replace(/'/g, "''")}',
+                '${JSON.stringify(tags).replace(/'/g, "''")}'
+            )`;
+            if (i != elements.length - 1) query += ', ';
         }
         client.query(query);
         res.status(200).json({ message: 'Blog created' });
     }
     if (action == 'edit') {
+        const headerImage = req.body.headerImage || '';
+        const tags = req.body.tags || [];
+        
         let query = `DELETE FROM blog WHERE blogId = ${id}`;
-        client.query(query);
-        if(elements.length === 0){
-            res.status(200).json({ message: 'Blog edited' });
-            return;
-        }
-        query = 'INSERT INTO blog (blogTitle, blogId, blockType, blockOrder, blockContent, isLive) VALUES ';
+        await client.query(query);
+        
+        query = 'INSERT INTO blog (blogTitle, blogId, blockType, blockOrder, blockContent, isLive, headerImage, tags) VALUES ';
         for (let i = 0; i < elements.length; i++) {
-            query += `('${title.replace(/'/g, "''")}', ${id}, '${elements[i].blocktype.replace(/'/g, "''")}', ${elements[i].blockorder}, '${elements[i].blockcontent.replace(/'/g, "''")}', ${true})`;
-            if (i != elements.length - 1) {
-                query += ', ';
-            }
+            query += `(
+                '${title.replace(/'/g, "''")}', 
+                ${id}, 
+                '${elements[i].blocktype.replace(/'/g, "''")}', 
+                ${elements[i].blockorder}, 
+                '${elements[i].blockcontent.replace(/'/g, "''")}', 
+                ${true},
+                '${headerImage.replace(/'/g, "''")}',
+                '${JSON.stringify(tags).replace(/'/g, "''")}'
+            )`;
+            if (i != elements.length - 1) query += ', ';
         }
-        try {
-            client.query(query);
-            res.status(200).json({ message: 'Blog edited' });
-        }
-        catch (err: any) {
-            console.log(err);
-        }
+        client.query(query);
+        res.status(200).json({ message: 'Blog edited' });
     }
     if (action == 'fetchAllPosts') {
         const query = 'SELECT * FROM blog';

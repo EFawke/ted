@@ -122,6 +122,51 @@
   }
 }
 
-.blogViewMarkdownContainer {
-  
+.blog-content {
+  line-height: 1.6;
+  font-size: 1.1rem;
+}
+
+.blog-content p {
+  margin-bottom: 1.5rem;
+}
+
+.blog-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius-3);
+  margin: 2rem 0;
+}
+
+.blog-content h2 {
+  font-size: 1.5rem;
+  margin: 2rem 0 1rem;
+  font-weight: 600;
+}
+
+.blog-content ul, .blog-content ol {
+  padding-left: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.blog-content blockquote {
+  border-left: 3px solid var(--accent-9);
+  padding-left: 1rem;
+  margin: 1.5rem 0;
+  color: var(--gray-11);
+}
+
+.blog-content pre {
+  background: var(--gray-2);
+  padding: 1rem;
+  border-radius: var(--radius-3);
+  overflow-x: auto;
+  margin: 1.5rem 0;
+}
+
+.blog-content code {
+  font-family: monospace;
+  background: var(--gray-3);
+  padding: 0.2em 0.4em;
+  border-radius: var(--radius-1);
 }

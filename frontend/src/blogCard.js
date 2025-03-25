@@ -1,6 +1,6 @@
 // BlogCard.js
 import "@radix-ui/themes/styles.css";
-import { Card, Text, Link, Flex } from "@radix-ui/themes";
+import { Card, Text, Link, Flex, Badge } from "@radix-ui/themes";
 import { ArrowTopRightIcon } from "@radix-ui/react-icons"
 import './App.css';
 import { useState } from "react";
@@ -63,8 +63,8 @@ const BlogCard = (props) => {
                         <Flex maxWidth="100%">
                             <BlogText content={props.post.blockcontent} />
                         </Flex>
-                        <Flex className="tools_container" mt="2" gap="2" 
-                              direction="row" width="100%" justify="end">
+                        <Flex className="tools_container" mt="2" gap="2" direction="row" width="100%" justify="end">
+                            {props.post.isLive === false ? <Badge color="orange">Archived</Badge> : null}
                             <Text size="3" weight="light">{datePosted}</Text>
                         </Flex>
                     </Flex>

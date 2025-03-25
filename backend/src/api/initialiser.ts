@@ -11,11 +11,19 @@ if (!process.env.DATABASE_URL) {
 }
 client.connect();
 
+// client.query(`
+//     DROP TABLE blog;
+//     `)
+//     .then(() => console.log('Table deleted successfully'))
+//     .catch((err :Error) => console.error(err))
+
 client.query(`
     CREATE TABLE IF NOT EXISTS blog (
     id SERIAL PRIMARY KEY,
     blogTitle TEXT,
     blogId INT,
+    headerImage TEXT,
+    tags JSONB,
     blockType TEXT,
     blockOrder INT,
     blockContent TEXT,

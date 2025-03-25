@@ -1,5 +1,5 @@
 import React from 'react';
-import { Flex, Avatar, Tooltip, Button, IconButton, Dialog, Link, Separator, Text } from "@radix-ui/themes";
+import { Flex, Avatar, Tooltip, Button, IconButton, Dialog, Link, Separator, Text, Badge } from "@radix-ui/themes";
 import { PersonIcon } from "@radix-ui/react-icons";
 import GoogleLoginButton from './GoogleLoginButton';
 import { AuthContext } from './AuthContext.js';
@@ -49,13 +49,18 @@ class Header extends React.Component {
 
                 <Dialog.Root>
                     <Dialog.Trigger>
-                        {isAuthenticated ? ( // Use context's isAuthenticated directly
-                            <IconButton radius="full" variant="outline" color="gray">
-                                <Avatar
-                                    src={user?.picture}
-                                    fallback={user?.name ? user.name[0] : "U"}
-                                />
-                            </IconButton>
+                        {isAuthenticated ? (
+                            <Flex align="center" gap="2">
+                                {user?.isAdmin && (
+                                    <Badge color="ruby" variant="soft">Admin</Badge>
+                                )}
+                                <IconButton radius="full" variant="outline" color="gray">
+                                    <Avatar
+                                        src={user?.picture}
+                                        fallback={user?.name ? user.name[0] : "U"}
+                                    />
+                                </IconButton>
+                            </Flex>
                         ) : (
                             <IconButton size="3" radius="full" variant="outline" color="gray">
                                 <PersonIcon height="25" width="25" />
@@ -64,11 +69,12 @@ class Header extends React.Component {
                     </Dialog.Trigger>
 
                     <Dialog.Content maxWidth="450px">
-                        {isAuthenticated ? ( // Use context's isAuthenticated directly
+                        {isAuthenticated ? (
                             <Flex gap="3" direction="column">
-                                <Dialog.Title>Log out</Dialog.Title>
+                                <Dialog.Title>Account</Dialog.Title>
                                 <Dialog.Description size="2" mb="4">
-                                    Logged in as {user?.name}, log out?
+                                    {user?.isAdmin && <Badge color="ruby" mr="2">Admin</Badge>}
+                                    Logged in as {user?.name}
                                 </Dialog.Description>
                                 <Dialog.Close>
                                     <Button variant="soft" color="gray" onClick={logout}>

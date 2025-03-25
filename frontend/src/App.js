@@ -11,6 +11,7 @@ import Header from './Header.js';
 import { useState, useEffect } from 'react';
 import ReactGA from "react-ga4";
 import { AuthProvider } from './AuthContext.js';
+import { useAuth } from './AuthContext.js';
 
 const trackingId = process.env.REACT_APP_GOOGLE_ANALYTICS_ID;
 
@@ -25,6 +26,8 @@ function TrackPageViews() {
 }
 
 function Home() {
+  const { user } = useAuth();
+  const isAdmin = user?.isAdmin;
   return (
     <Container size="4">
       <Flex gap="4" direction="row" justify="between" id="weird_flex_bro">
@@ -44,7 +47,7 @@ function Home() {
         <Section id="right_page">
           <Flex gap="4" direction="column">
             <Header />
-            <BlogNav />
+            <BlogNav isAdmin={isAdmin} />
           </Flex>
         </Section>
       </Flex>
@@ -60,13 +63,14 @@ function App() {
 
   return (
     <Theme appearance="dark" accentColor="iris" grayColor="mauve" scaling="90%">
+      {/* <ThemePanel /> */}
       <AuthProvider>
         <Router>
           <TrackPageViews />
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/edit" element={<EditPage />} />
-            <Route path="/edit/:id" element={<EditPage />} />
+            <Route path="/edit" element={<AuthProvider><EditPage /></AuthProvider>} />
+            <Route path="/edit/:id" element={<AuthProvider><EditPage /></AuthProvider>} />
             <Route path="/view" element={<ViewPage />} />
             <Route path="/view/:id" element={<ViewPage />} />
           </Routes>

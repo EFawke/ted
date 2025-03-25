@@ -30,10 +30,10 @@ export const AuthProvider = ({ children }) => {
 
   const login = (userData, token) => {
     try {
-      const serializedUser = JSON.stringify(userData);
-      localStorage.setItem('user', serializedUser);
+      const userWithAdminFlag = { ...userData, isAdmin: userData.isAdmin };
+      localStorage.setItem('user', JSON.stringify(userWithAdminFlag));
       localStorage.setItem('authToken', token);
-      setUser(userData);
+      setUser(userWithAdminFlag);
       setIsAuthenticated(true);
     } catch (error) {
       console.error('Error saving auth data:', error);
