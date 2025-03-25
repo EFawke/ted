@@ -9,7 +9,7 @@
     "backend": "cd backend && npm i && npm run dev",
     "dev": "concurrently --kill-others-on-fail \"npm run backend\" \"npm run frontend\"",
     "start": "cd backend && npm install && npm run start",
-    "heroku-postbuild": "cd backend && npm install --production=false && npx tsc -p tsconfig.json"
+    "heroku-postbuild": "cd backend && npm install --production=false && npx tsc -p tsconfig.json && cd ../frontend && npm install && npm run build"
   },
   "author": "",
   "license": "ISC",
