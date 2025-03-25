@@ -25,6 +25,8 @@ function TrackPageViews() {
   return null;
 }
 
+console.log("App.js");
+
 function Home() {
   const { user } = useAuth();
   const isAdmin = user?.isAdmin;
