@@ -1,10 +1,10 @@
 const express = require('express');
 const apiRouter = express.Router();
 
-require('./initialiser.ts');
+require('./initialiser');
 
-const blogRouter = require('./blogRouter.ts');
-const uploadRouter = require('./uploadRouter.ts');
+const blogRouter = require('./blogRouter');
+const uploadRouter = require('./uploadRouter');
 
 apiRouter.use('/blog', blogRouter);
 apiRouter.use('/upload', uploadRouter);
