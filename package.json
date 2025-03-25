@@ -8,8 +8,8 @@
     "frontend": "cd frontend && npm i && npm start",
     "backend": "cd backend && npm i && npm run dev",
     "dev": "concurrently --kill-others-on-fail \"npm run backend\" \"npm run frontend\"",
-    "start": "concurrently --kill-others-on-fail \"npm run backend\" \"npm run frontend\""
-
+    "start": "concurrently --kill-others-on-fail \"npm run backend\" \"npm run frontend\"",
+    "heroku-postbuild": "cd backend && npm install && npm run build"
   },
   "author": "",
   "license": "ISC",
