@@ -13,7 +13,7 @@ import ReactGA from "react-ga4";
 import { AuthProvider } from './AuthContext.js';
 import { useAuth } from './AuthContext.js';
 
-const trackingId = process.env.REACT_APP_GOOGLE_ANALYTICS_ID;
+const trackingId = "G-YB6KV33SG7";
 
 function TrackPageViews() {
   const location = useLocation();
