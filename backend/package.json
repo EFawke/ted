@@ -4,7 +4,6 @@
   "description": "my blog",
   "main": "src/app.ts",
   "scripts": {
-    "build": "node_modules/.bin/tsc",
     "start": "node dist/app.js",
     "dev": "ts-node src/app.ts"
   },
@@ -30,7 +29,6 @@
     "@types/multer": "^1.4.12",
     "@types/node": "^22.13.4",
     "@types/pg": "^8.11.11",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.8.2"
+    "ts-node": "^10.9.2"
   }
 }

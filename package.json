@@ -9,12 +9,14 @@
     "backend": "cd backend && npm i && npm run dev",
     "dev": "concurrently --kill-others-on-fail \"npm run backend\" \"npm run frontend\"",
     "start": "concurrently --kill-others-on-fail \"npm run backend\" \"npm run frontend\"",
-    "heroku-postbuild": "cd backend && npm install && npm run build"
+    "heroku-postbuild": "cd backend && npm install && ../../node_modules/.bin/tsc"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "concurrently": "^9.1.2",
+    "concurrently": "^9.1.2"
+  },
+  "devDependencies": {
     "typescript": "^5.8.2"
   }
 }
