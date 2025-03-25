@@ -36,7 +36,6 @@ blogRouter.post('/', async (req, res) => {
     const id = req.body.blogId;
 
     if (action == 'create') {
-        console.log(elements);
         let id = await getMaxIdFromBlogs();
         if (id.max == null) {
             id = 1;
@@ -54,7 +53,6 @@ blogRouter.post('/', async (req, res) => {
         res.status(200).json({ message: 'Blog created' });
     }
     if (action == 'edit') {
-        console.log("EDITING")
         let query = `DELETE FROM blog WHERE blogId = ${id}`;
         client.query(query);
         if(elements.length === 0){
@@ -69,8 +67,6 @@ blogRouter.post('/', async (req, res) => {
             }
         }
         try {
-            console.log("trying to edit")
-            console.log(query)
             client.query(query);
             res.status(200).json({ message: 'Blog edited' });
         }
@@ -79,15 +75,12 @@ blogRouter.post('/', async (req, res) => {
         }
     }
     if (action == 'fetchAllPosts') {
-        console.log("FETCH ALL POSTS")
         const query = 'SELECT * FROM blog';
         try {
             const result = await client
                 .query(query);
-            console.log(result.rows);
             res.status(200).json(result.rows);
         } catch (err: any) {
-            console.log("WHAT THE FUCKK")
             console.log(err);
         }
 

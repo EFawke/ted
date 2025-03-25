@@ -1,13 +1,15 @@
+// links.js
 import "@radix-ui/themes/styles.css";
 import { Box, Flex, Link } from "@radix-ui/themes";
 import { GitHubLogoIcon, LinkedInLogoIcon, EnvelopeClosedIcon } from "@radix-ui/react-icons"
 import AddNewPostButton from "./newPostButtonLinks.js";
+import { useAuth } from './AuthContext.js';
 
+const Links = () => {
+    const { user } = useAuth();
+    const isAdmin = user?.isAdmin;
 
-const Links = (props) => {
-    const loggedIn = props.loggedIn;
-    const isAdmin = props.isAdmin;
-    if (!loggedIn || !isAdmin) {
+    if (!isAdmin) {
         return (
             <Box mb="7" id="links">
                 <Flex gap="5" direction="row">
@@ -24,9 +26,7 @@ const Links = (props) => {
             </Box>
         )
     } else {
-        return (
-            <AddNewPostButton />
-        )
+        return <AddNewPostButton />
     }
 }
 

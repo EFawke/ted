@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Flex } from "@radix-ui/themes";
+import { Box, Flex, Heading } from "@radix-ui/themes";
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 
 class BlogNavHeader extends React.Component {
@@ -17,14 +17,14 @@ class BlogNavHeader extends React.Component {
             <Flex
                 align="center"
                 style={{
-                    padding: "8px 12px",
+                    // padding: "8px 12px",
                     borderBottom: "1px solid #ddd",
-                    cursor: "text",
-                    position: "relative", // Needed for absolute positioning of the icon
+                    // cursor: "text",
+                    // position: "relative",
                 }}
             >
-                {/* Magnifying glass icon positioned inside the input field */}
-                <MagnifyingGlassIcon 
+                <Heading weight="light" size="8">Recent posts</Heading>
+                {/* <MagnifyingGlassIcon 
                     style={{
                         position: "absolute",
                         left: "10px",
@@ -53,7 +53,7 @@ class BlogNavHeader extends React.Component {
                             fontFamily: "Roboto, sans-serif",
                         }}
                     />
-                </Box>
+                </Box> */}
             </Flex>
         );
     }

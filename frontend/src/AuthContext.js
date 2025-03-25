@@ -20,7 +20,6 @@ export const AuthProvider = ({ children }) => {
         }
       } catch (error) {
         console.error('Error initializing auth:', error);
-        // Clear invalid storage
         localStorage.removeItem('user');
         localStorage.removeItem('authToken');
       }

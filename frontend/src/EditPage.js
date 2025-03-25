@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Box, Heading, Container, TextArea, TextField, Flex, Button, DropdownMenu, Link, IconButton } from "@radix-ui/themes";
+import { Box, Heading, Container, TextArea, TextField, Flex, Button, DropdownMenu, Link, IconButton, Text } from "@radix-ui/themes";
 import { PlusIcon, MinusIcon } from "@radix-ui/react-icons";
 import axios from 'axios';
 import AddImageButton from './AddImageButton';
@@ -15,15 +15,15 @@ function EditPage({ isAdmin }) {
   const [file, setFile] = useState(null);
   const [open, setOpen] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [loggedIn, setIsLoggedIn] = useState(()=> {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      return true;
+    }
+    return false;
+  });
 
   const navigate = useNavigate();
-
-  // Redirect if the user is not an admin
-  // useEffect(() => {
-  //   if (!isAdmin) {
-  //     navigate('/');
-  //   }
-  // }, [isAdmin, navigate]);
 
   useEffect(() => {
     if (id) {
@@ -38,7 +38,17 @@ function EditPage({ isAdmin }) {
     }
   }, [id]);
 
-  if (!isAdmin) return null; // Prevent rendering unauthorized content
+  if (!isAdmin) return (
+    <Container size="4">
+      <AuthProvider>
+        <Header loggedIn={loggedIn} />
+      </AuthProvider>
+      <div>
+        <Heading size="8" weight="bold">Unauthorized</Heading>
+        <Text size="3">You do not have permission to view this page.</Text>
+      </div>
+    </Container>
+  ); // Prevent rendering unauthorized content
 
   const handleSave = (file) => {
     if (file) {
@@ -51,7 +61,6 @@ function EditPage({ isAdmin }) {
         headers: { 'Content-Type': 'multipart/form-data' }
       })
         .then(response => {
-          console.log("Uploaded Image URL:", response.data.url);
           addImage(`http://localhost:8000${response.data.url}`);
           setOpen(false);
           setUploading(false);
@@ -70,7 +79,6 @@ function EditPage({ isAdmin }) {
   };
 
   const addImage = (imageUrl) => {
-    console.log("Adding image to post:", imageUrl);
     setElements([...elements, { blocktype: 'image', blockcontent: imageUrl, blockorder: elements.length }]);
   };
 
@@ -111,7 +119,7 @@ function EditPage({ isAdmin }) {
   return (
     <Container size="4">
       <AuthProvider>
-        <Header />
+        <Header loggedIn={loggedIn} />
       </AuthProvider>
       <Flex direction="column" gap="4">
         <Flex width="100%" direction="row" mt="8" mb="5" align="end" style={{ justifyContent: 'space-between' }}>

@@ -5,6 +5,11 @@ import jwt from 'jsonwebtoken';
 const googleRouter = express.Router();
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
+const verifyAdmin = (email: any) => {
+  const admins = process.env.ADMINS?.split(',');
+  return admins?.includes(email);
+};
+
 googleRouter.post('/', async (req: any, res: any) => {
   try {
     const { token } = req.body;
@@ -30,12 +35,15 @@ googleRouter.post('/', async (req: any, res: any) => {
       { expiresIn: '1h' }
     );
 
+    // console.log(verifyAdmin(payload.email));
+
     res.status(200).json({
       user: {
         id: payload.sub,
         email: payload.email,
         name: payload.name,
-        picture: payload.picture
+        picture: payload.picture,
+        isAdmin: verifyAdmin(payload.email)
       },
       token: jwtToken
     });

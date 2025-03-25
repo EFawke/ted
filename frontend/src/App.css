@@ -16,42 +16,20 @@
   align-items: center;
   cursor: pointer;
   transition: all 0.3s ease;
-  /* Smooth transition for all animatable properties */
 }
 
 .nav-select {
   width: 2rem;
-  /* color: #ffffff9e; */
-  /* background: #ffffff9e; */
 }
 
 .nav-selected {
   width: 4rem;
-  /* color: white; */
-  /* background: white; */
 }
-
-
-/* .about_paragraph {
-  color: rgba(255, 255, 255, 0.73);
-} */
-
-/* .about_paragraph:hover {
-  color: white !important;
-} */
 
 .nav-container {
   display: flex;
   align-items: center;
   cursor: pointer;
-}
-
-.socials {
-  /* color: rgba(255, 255, 255, 0.73); */
-}
-
-.socials:hover {
-  /* color: white; */
 }
 
 .icon_pos {
@@ -142,4 +120,8 @@
   #about > div {
     margin-top: 0;
   }
+}
+
+.blogViewMarkdownContainer {
+  
 }
