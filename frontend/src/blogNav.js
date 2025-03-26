@@ -52,7 +52,7 @@ class BlogNav extends React.Component {
             <Flex direction="column" gap="4" mt="6">
                 <BlogNavHeader />
                 {this.state.posts.map((post) => {
-                    console.log(post);
+                    // console.log(post);
                     return (
                         <BlogCard key={post.id} post={post} isLive={post.islive} />
                     )

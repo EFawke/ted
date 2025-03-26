@@ -141,7 +141,7 @@ function EditPage() {
   };
 
   const submitPost = () => {
-    console.log(tags);
+    // console.log(tags);
     axios.post('/api/blog', {
       elements,
       title,

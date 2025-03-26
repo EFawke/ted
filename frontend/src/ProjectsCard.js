@@ -11,7 +11,7 @@ const Projects = (props) => {
 
     const selectCurrent = () => {
         setSelected(!selected);
-        console.log(selected);
+        // console.log(selected);
     }
 
     return (

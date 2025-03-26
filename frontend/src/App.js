@@ -25,7 +25,7 @@ function TrackPageViews() {
   return null;
 }
 
-console.log("App.js");
+// console.log("App.js");
 
 function Home() {
   const { user } = useAuth();
