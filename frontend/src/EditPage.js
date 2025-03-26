@@ -23,6 +23,8 @@ function EditPage() {
   const [headerImageOpen, setHeaderImageOpen] = useState(false);
   const [headerImageUploading, setHeaderImageUploading] = useState(false);
 
+  const isProduction = process.env.NODE_ENV === 'production';
+
   const navigate = useNavigate();
 
   const { user, isAuthenticated } = useAuth();
@@ -71,6 +73,11 @@ function EditPage() {
   }
 
   const handleSave = (file, type = 'image') => {
+    const isProduction = process.env.NODE_ENV === 'production';
+    const baseURL = isProduction
+    ? 'https://tedfawke.com/'
+    : 'http://localhost:8000/';
+
     if (file) {
       setUploading(true);
 
@@ -81,7 +88,7 @@ function EditPage() {
         headers: { 'Content-Type': 'multipart/form-data' }
       })
         .then(response => {
-          const url = `http://localhost:8000${response.data.url}`;
+          const url = `${baseURL}${response.data.url}`;
           if (type === 'headerImage') {
             setHeaderImage(url);
           } else {

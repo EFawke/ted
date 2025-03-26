@@ -1,9 +1,12 @@
-// Frontend: src/api/client.js
 import axios from 'axios';
 
+const isProduction = process.env.NODE_ENV === 'production';
+
 const apiClient = axios.create({
-  baseURL: 'http://localhost:8000/api', // Your backend API base URL
-  timeout: 10000, // 10 seconds
+  baseURL: isProduction
+    ? 'https://tedfawke.com/api'
+    : 'http://localhost:8000/api',
+  timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
   }

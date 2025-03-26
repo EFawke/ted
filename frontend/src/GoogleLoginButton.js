@@ -6,11 +6,15 @@ import { useAuth } from './AuthContext.js';
 
 const GoogleLoginButton = () => {
   const { login } = useAuth();
+  const isProduction = process.env.NODE_ENV === 'production';
+  const baseURL = isProduction
+  ? 'https://tedfawke.com/'
+  : 'http://localhost:8000/';
 
   const responseMessage = async (response) => {
     try {
       const { data } = await axios.post(
-        'http://localhost:8000/auth/google',
+        `${baseURL}/auth/google`,
         { token: response.credential }
       );
 
