@@ -21,11 +21,14 @@ app.use('/uploads', express.static(path.join(__dirname, './public/uploads')));
 let port:number = process.env.PORT ? parseInt(process.env.PORT) : 8000;
 
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static('../../frontend/build'));
+  const buildPath = path.resolve(__dirname, '../../frontend/build');
+  console.log("Serving static files from:", buildPath);
+  app.use(express.static(buildPath));
   app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, '../', '../', 'frontend', 'build', 'index.html'));
+    res.sendFile(path.join(buildPath, 'index.html'));
   });
 }
+
 
 app.listen(port);
 console.log(`Listening on port ${port}`);
