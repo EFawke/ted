@@ -107,6 +107,10 @@ function EditPage() {
   };
 
   const handleHeaderImageSave = (file) => {
+    const isProduction = process.env.NODE_ENV === 'production';
+    const baseURL = isProduction
+    ? 'https://tedfawke.com'
+    : 'http://localhost:8000';
     if (file) {
       setHeaderImageUploading(true);
       const formData = new FormData();
@@ -116,7 +120,7 @@ function EditPage() {
         headers: { 'Content-Type': 'multipart/form-data' }
       })
         .then(response => {
-          setHeaderImage(`http://localhost:8000${response.data.url}`);
+          setHeaderImage(`${baseURL}${response.data.url}`);
           setHeaderImageOpen(false);
           setHeaderImageUploading(false);
           setHeaderImageFile(null);
