@@ -75,8 +75,8 @@ function EditPage() {
   const handleSave = (file, type = 'image') => {
     const isProduction = process.env.NODE_ENV === 'production';
     const baseURL = isProduction
-    ? 'https://tedfawke.com/'
-    : 'http://localhost:8000/';
+    ? 'https://tedfawke.com'
+    : 'http://localhost:8000';
 
     if (file) {
       setUploading(true);

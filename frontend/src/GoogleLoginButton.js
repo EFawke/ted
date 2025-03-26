@@ -14,7 +14,7 @@ const GoogleLoginButton = () => {
   const responseMessage = async (response) => {
     try {
       const { data } = await axios.post(
-        `${baseURL}/auth/google`,
+        `${baseURL}auth/google`,
         { token: response.credential }
       );
 
