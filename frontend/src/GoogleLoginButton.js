@@ -42,14 +42,6 @@ const GoogleLoginButton = () => {
         <GoogleLogin
           onSuccess={responseMessage}
           onError={errorMessage}
-          theme="outline"
-          size="large"
-          text="signin_with"
-          shape="rectangular"
-          width="280px"
-          height="44px"
-          background="white"
-          border="unset"
         />
       </GoogleOAuthProvider>
     </div>
