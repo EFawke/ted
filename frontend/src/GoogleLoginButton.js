@@ -36,15 +36,19 @@ const GoogleLoginButton = () => {
     console.log('Login Failed:', error);
   };
 
+  useEffect(() => {
+    console.log('window.google =', window.google);
+  }, []);  
+
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '44px' }}>
+    // <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '44px' }}>
       <GoogleOAuthProvider clientId="128885006939-iihg8o4bg4nfb1lt76bhb23t4ustdr2l.apps.googleusercontent.com">
         <GoogleLogin
           onSuccess={responseMessage}
           onError={errorMessage}
         />
       </GoogleOAuthProvider>
-    </div>
+    // </div>
   );
 };
 
