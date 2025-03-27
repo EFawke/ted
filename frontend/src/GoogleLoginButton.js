@@ -37,7 +37,7 @@ const GoogleLoginButton = () => {
   };
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '44px' }}>
+    <div style={{ width: '280px', display: 'flex', justifyContent: 'center', alignItems: 'center', height: '44px' }}>
       <GoogleOAuthProvider clientId="128885006939-iihg8o4bg4nfb1lt76bhb23t4ustdr2l.apps.googleusercontent.com">
         <GoogleLogin
           onSuccess={responseMessage}
@@ -46,7 +46,8 @@ const GoogleLoginButton = () => {
           size="large"
           text="signin_with"
           shape="rectangular"
-          width={280} // use a valid pixel value here
+          width={280}
+          height={44}
         />
       </GoogleOAuthProvider>
     </div>
