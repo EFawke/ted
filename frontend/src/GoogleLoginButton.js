@@ -31,10 +31,17 @@ const GoogleLoginButton = () => {
 
   return (
     <GoogleOAuthProvider clientId="128885006939-iihg8o4bg4nfb1lt76bhb23t4ustdr2l.apps.googleusercontent.com">
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 44 }}>
       <GoogleLogin
         onSuccess={responseMessage}
         onError={errorMessage}
+        theme="outline"
+        size="large"
+        text="signin_with"
+        shape="rectangular"
+        width="100%"
       />
+      </div>
     </GoogleOAuthProvider>
   );
 };
