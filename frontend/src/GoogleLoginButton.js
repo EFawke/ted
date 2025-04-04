@@ -7,16 +7,17 @@ const GoogleLoginButton = () => {
   const { login } = useAuth();
 
   const loginWithGoogle = useGoogleLogin({
-    onSuccess: async (tokenResponse) => {
-      const { data } = await axios.post(
-        'https://tedfawke.com/auth/google',
-        { token: tokenResponse.access_token }
-      );
+    onSuccess: async (codeResponse) => {
+      const { data } = await axios.post('https://tedfawke.com/auth/google', {
+        code: codeResponse.code,
+      });
       login(data.user, data.token);
       window.location.reload();
     },
     onError: (err) => console.error('Login error', err),
+    flow: 'auth-code', // 🔁 the secure option
   });
+  
 
   return (
     <button className="google-signin-btn" onClick={() => loginWithGoogle()}>
