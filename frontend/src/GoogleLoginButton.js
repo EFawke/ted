@@ -6,12 +6,12 @@ import { useAuth } from './AuthContext.js';
 import './App.css';
 
 const GoogleLoginButton = () => {
-  const [isMounted, setIsMounted] = useState(false);
+  // const [isMounted, setIsMounted] = useState(false);
 
-  useEffect(() => {
-    setIsMounted(true);
-    return () => setIsMounted(false);
-  }, []);
+  // useEffect(() => {
+  //   setIsMounted(true);
+  //   return () => setIsMounted(false);
+  // }, []);
 
   useEffect(() => {
     if (typeof window !== 'undefined' && window.google === undefined) {
@@ -44,12 +44,12 @@ const GoogleLoginButton = () => {
   return (
     <GoogleOAuthProvider clientId="128885006939-iihg8o4bg4nfb1lt76bhb23t4ustdr2l.apps.googleusercontent.com">
       <div>
-      {isMounted && (
+      {/* {isMounted && ( */}
         <GoogleLogin
           onSuccess={responseMessage}
           onError={errorMessage}
           />
-        )}
+        {/* )} */}
       </div>
     </GoogleOAuthProvider>
   );
