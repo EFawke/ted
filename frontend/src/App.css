@@ -101,23 +101,28 @@
     height: unset;
     padding-bottom: 0;
   }
+
   #right_page {
     width: 100%;
     padding-top: 0;
   }
+
   #weird_flex_bro {
     flex-direction: column;
     margin: 0rem 5%;
   }
+
   #nav_box {
     display: none;
   }
+
   #links {
     margin-top: 5rem;
     margin-bottom: 5rem;
     padding-bottom: 0;
   }
-  #about > div {
+
+  #about>div {
     margin-top: 0;
   }
 }
@@ -144,7 +149,8 @@
   font-weight: 600;
 }
 
-.blog-content ul, .blog-content ol {
+.blog-content ul,
+.blog-content ol {
   padding-left: 2rem;
   margin-bottom: 1.5rem;
 }
@@ -171,9 +177,37 @@
   border-radius: var(--radius-1);
 }
 
-/* .google-auth-wrapper {
-  height: 44px;
-  min-width: 300px;
-  position: relative;
-  overflow: hidden;
-} */
+.google-btn {
+  background-color: white;
+  border: 1px solid #ddd;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.google-signin-btn {
+  align-items: center;
+  background-color: #fff;
+  color: #5f6368;
+  border: 1px solid #dadce0;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 10px 16px;
+  cursor: pointer;
+  box-shadow: 0 1px 2px rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
+  transition: background-color 0.2s ease-in-out;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.google-signin-btn:hover {
+  background-color: #f7f8f8;
+}
+
+.google-icon {
+  height: 18px;
+  margin-right: 12px;
+}
