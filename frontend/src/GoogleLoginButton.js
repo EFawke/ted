@@ -43,16 +43,11 @@ const GoogleLoginButton = () => {
 
   return (
     <GoogleOAuthProvider clientId="128885006939-iihg8o4bg4nfb1lt76bhb23t4ustdr2l.apps.googleusercontent.com">
-      <div className="google-auth-wrapper">
+      <div>
       {isMounted && (
         <GoogleLogin
           onSuccess={responseMessage}
           onError={errorMessage}
-          use_fedcm_supported={false}
-          text="signin_with"
-          shape="rectangular"
-          size="large"
-          width="300" // Adjust or use '100%' for full container width
           />
         )}
       </div>

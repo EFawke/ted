@@ -14,16 +14,8 @@ class BlogNavHeader extends React.Component {
 
     render() {
         return (
-            <Flex
-                align="center"
-                style={{
-                    // padding: "8px 12px",
-                    borderBottom: "1px solid #ddd",
-                    // cursor: "text",
-                    // position: "relative",
-                }}
-            >
-                <Heading weight="light" size="8">Recent posts</Heading>
+            <Flex align="center">
+                <Heading weight="medium" size="8">Recent posts</Heading>
                 {/* <MagnifyingGlassIcon 
                     style={{
                         position: "absolute",

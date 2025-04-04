@@ -171,9 +171,9 @@
   border-radius: var(--radius-1);
 }
 
-.google-auth-wrapper {
+/* .google-auth-wrapper {
   height: 44px;
   min-width: 300px;
   position: relative;
   overflow: hidden;
-}
+} */

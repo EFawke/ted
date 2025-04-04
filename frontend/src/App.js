@@ -25,8 +25,6 @@ function TrackPageViews() {
   return null;
 }
 
-// console.log("App.js");
-
 function Home() {
   const { user } = useAuth();
   const isAdmin = user?.isAdmin;
@@ -64,7 +62,7 @@ function App() {
   }, []);
 
   return (
-    <Theme appearance="dark" accentColor="iris" grayColor="mauve" scaling="90%">
+    <Theme appearance="dark" accentColor="blue" grayColor="mauve" scaling="90%">
       {/* <ThemePanel /> */}
       <AuthProvider>
         <Router>
