@@ -2,10 +2,10 @@
 import "@radix-ui/themes/styles.css";
 import { Card, Text, Link, Flex, Badge } from "@radix-ui/themes";
 import { ArrowTopRightIcon } from "@radix-ui/react-icons"
-import './App.css';
+import './css/App.css';
 import { useState } from "react";
 import ReactMarkdown from 'react-markdown';
-import { useAuth } from './AuthContext.js';
+import { useAuth } from './authentication/AuthContext.js';
 
 function BlogText({ content }) {
     return (

@@ -2,7 +2,7 @@
 import "@radix-ui/themes/styles.css";
 import { Theme, ThemePanel, Container, Flex, Section, Heading, HoverCard, Text, Link } from "@radix-ui/themes";
 import { BrowserRouter as Router, Routes, Route, useParams, useLocation } from 'react-router-dom';
-import './App.css';
+import './css/App.css';
 import Links from "./links.js";
 import BlogNav from "./blogNav.js";
 import EditPage from './EditPage.js';
@@ -10,8 +10,8 @@ import ViewPage from './ViewPage.js';
 import Header from './Header.js';
 import { useState, useEffect } from 'react';
 import ReactGA from "react-ga4";
-import { AuthProvider } from './AuthContext.js';
-import { useAuth } from './AuthContext.js';
+import { AuthProvider } from './authentication/AuthContext.js';
+import { useAuth } from './authentication/AuthContext.js';
 
 const trackingId = "G-YB6KV33SG7";
 

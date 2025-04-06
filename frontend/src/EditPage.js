@@ -5,8 +5,8 @@ import { PlusIcon, MinusIcon } from "@radix-ui/react-icons";
 import axios from 'axios';
 import AddImageButton from './AddImageButton';
 import Header from './Header.js';
-import { AuthProvider } from './AuthContext.js';
-import { useAuth } from './AuthContext.js';
+import { AuthProvider } from './authentication/AuthContext.js';
+import { useAuth } from './authentication/AuthContext.js';
 
 
 function EditPage() {

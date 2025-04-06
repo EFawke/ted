@@ -1,8 +1,8 @@
 import React from 'react';
 import { Flex, Avatar, Tooltip, Button, IconButton, Dialog, Link, Separator, Text, Badge } from "@radix-ui/themes";
 import { PersonIcon } from "@radix-ui/react-icons";
-import GoogleLoginButton from './GoogleLoginButton';
-import { AuthContext } from './AuthContext.js';
+import GoogleLoginButton from './authentication/GoogleLoginButton.js';
+import { AuthContext } from './authentication/AuthContext.js';
 
 class Header extends React.Component {
     static contextType = AuthContext;

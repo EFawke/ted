@@ -1,9 +1,8 @@
-// links.js
 import "@radix-ui/themes/styles.css";
 import { Box, Flex, Link } from "@radix-ui/themes";
 import { GitHubLogoIcon, LinkedInLogoIcon, EnvelopeClosedIcon } from "@radix-ui/react-icons"
 import AddNewPostButton from "./newPostButtonLinks.js";
-import { useAuth } from './AuthContext.js';
+import { useAuth } from './authentication/AuthContext.js';
 
 const Links = () => {
     const { user } = useAuth();

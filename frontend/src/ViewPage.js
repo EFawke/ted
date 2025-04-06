@@ -3,9 +3,9 @@ import { useParams } from 'react-router-dom';
 import { Box, Heading, Container, Text, AspectRatio, Flex, Link, Badge } from "@radix-ui/themes";
 import axios from 'axios';
 import Header from './Header.js';
-import { AuthProvider } from './AuthContext.js';
+import { AuthProvider } from './authentication/AuthContext.js';
 import ReactMarkdown from 'react-markdown';
-import './App.css';
+import './css/App.css';
 
 function ViewPage() {
     const { id } = useParams();

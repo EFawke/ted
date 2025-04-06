@@ -1,11 +1,11 @@
 // BlogNav.js
 import React from "react";
 import { Box, Container, Flex, Section, Heading, Text, Card } from "@radix-ui/themes";
-import "./App.css";
+import "./css/App.css";
 import BlogCard from "./blogCard";
 import axios from 'axios';
 import BlogNavHeader from "./blogNavHeader";
-import { AuthContext } from './AuthContext.js';
+import { AuthContext } from './authentication/AuthContext.js';
 // import { useAuth } from './AuthContext.js';
 
 class BlogNav extends React.Component {
