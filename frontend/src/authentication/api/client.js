@@ -4,8 +4,8 @@ const isProduction = process.env.NODE_ENV === 'production';
 
 const apiClient = axios.create({
   baseURL: isProduction
-    ? 'https://tedfawke.com/api'
-    : 'http://localhost:8000/api',
+    ? 'https://tedfawke.com/auth'
+    : 'http://localhost:8000/auth',
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
