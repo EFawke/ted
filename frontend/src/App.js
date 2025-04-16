@@ -8,10 +8,11 @@ import BlogNav from "./blogNav.js";
 import EditPage from './EditPage.js';
 import ViewPage from './ViewPage.js';
 import Header from './Header.js';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import ReactGA from "react-ga4";
 import { AuthProvider } from './authentication/AuthContext.js';
-import { useAuth } from './authentication/AuthContext.js';
+// import { useAuth } from './authentication/AuthContext.js';
+import { ProtectedRoute } from './ProtectedRoute';
 
 const trackingId = "G-YB6KV33SG7";
 
@@ -26,8 +27,8 @@ function TrackPageViews() {
 }
 
 function Home() {
-  const { user } = useAuth();
-  const isAdmin = user?.isAdmin;
+  // const { user } = useAuth();
+  const isAdmin = false;
   return (
     <Container size="4">
       <Flex gap="4" direction="row" justify="between" id="weird_flex_bro">
@@ -63,14 +64,21 @@ function App() {
 
   return (
     <Theme appearance="dark" accentColor="blue" grayColor="mauve" scaling="90%">
-      {/* <ThemePanel /> */}
       <AuthProvider>
         <Router>
           <TrackPageViews />
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/edit" element={<AuthProvider><EditPage /></AuthProvider>} />
-            <Route path="/edit/:id" element={<AuthProvider><EditPage /></AuthProvider>} />
+            <Route path="/edit" element={
+              <ProtectedRoute adminOnly>
+                <EditPage />
+              </ProtectedRoute>
+            } />
+            <Route path="/edit/:id" element={
+              <ProtectedRoute adminOnly>
+                <EditPage />
+              </ProtectedRoute>
+            } />
             <Route path="/view" element={<ViewPage />} />
             <Route path="/view/:id" element={<ViewPage />} />
           </Routes>

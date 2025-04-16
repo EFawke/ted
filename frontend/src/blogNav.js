@@ -5,11 +5,11 @@ import "./css/App.css";
 import BlogCard from "./blogCard";
 import axios from 'axios';
 import BlogNavHeader from "./blogNavHeader";
-import { AuthContext } from './authentication/AuthContext.js';
+// import { AuthContext } from './authentication/AuthContext.js';
 // import { useAuth } from './AuthContext.js';
 
 class BlogNav extends React.Component {
-    static contextType = AuthContext;
+    // static contextType = AuthContext;
     constructor(props) {
         super(props);
         this.state = {

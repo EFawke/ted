@@ -5,6 +5,7 @@ import axios from 'axios';
 import Header from './Header.js';
 import { AuthProvider } from './authentication/AuthContext.js';
 import ReactMarkdown from 'react-markdown';
+import ScheduleDemo from './components/ScheduleDemo.js';
 import './css/App.css';
 
 function ViewPage() {
@@ -16,30 +17,30 @@ function ViewPage() {
 
     useEffect(() => {
         if (id) {
-          axios.post('/api/blog', { action: 'fetchPost', blogId: id })
-            .then((res) => {
-              const postData = res.data[0];
-              setTitle(postData.blogtitle);
-              setElements(res.data);
-              setHeaderImage(postData.headerimage || '');
-      
-              // Handle tags parsing safely
-              let tagsData = [];
-              try {
-                if (postData.tags) {
-                  tagsData = typeof postData.tags === 'string' 
-                    ? JSON.parse(postData.tags) 
-                    : postData.tags;
-                }
-              } catch (e) {
-                console.error('Error parsing tags:', e);
-                tagsData = postData.tags?.split(',').map(t => t.trim()) || [];
-              }
-              setTags(tagsData);
-            })
-            .catch(console.error);
+            axios.post('/api/blog', { action: 'fetchPost', blogId: id })
+                .then((res) => {
+                    const postData = res.data[0];
+                    setTitle(postData.blogtitle);
+                    setElements(res.data);
+                    setHeaderImage(postData.headerimage || '');
+
+                    // Handle tags parsing safely
+                    let tagsData = [];
+                    try {
+                        if (postData.tags) {
+                            tagsData = typeof postData.tags === 'string'
+                                ? JSON.parse(postData.tags)
+                                : postData.tags;
+                        }
+                    } catch (e) {
+                        console.error('Error parsing tags:', e);
+                        tagsData = postData.tags?.split(',').map(t => t.trim()) || [];
+                    }
+                    setTags(tagsData);
+                })
+                .catch(console.error);
         }
-      }, [id]);
+    }, [id]);
 
     const [loggedIn, setIsLoggedIn] = useState(() => {
         const storedUser = localStorage.getItem('user');
@@ -48,25 +49,21 @@ function ViewPage() {
 
     return (
         <Container size="4">
-            <AuthProvider>
-                <Header loggedIn={loggedIn} />
-            </AuthProvider>
+            {/* <AuthProvider> */}
+            <Header loggedIn={loggedIn} />
+            {/* </AuthProvider> */}
             <Flex direction="column" gap="4" className="blog-container">
                 {headerImage && (
-                    // <AspectRatio ratio={16 / 9}>
-                        <img
-                            src={headerImage}
-                            alt="Header"
-                            style={{
-                                objectFit: "cover",
-                                objectPosition: "top",
-                                //width: '100%',
-                                //height: '100%',
-                                borderRadius: 'var(--radius-3)',
-                                maxHeight: '360px'
-                            }}
-                        />
-                    // </AspectRatio>
+                    <img
+                        src={headerImage}
+                        alt="Header"
+                        style={{
+                            objectFit: "cover",
+                            objectPosition: "top",
+                            borderRadius: 'var(--radius-3)',
+                            maxHeight: '360px'
+                        }}
+                    />
                 )}
 
                 <Heading size="9" weight="bold" mb="4">{title}</Heading>
@@ -93,18 +90,19 @@ function ViewPage() {
                             )}
 
                             {element.blocktype === 'image' && (
-                                
-                                    <img
-                                        src={element.blockcontent}
-                                        alt="Blog content"
-                                        style={{
-                                            objectFit: 'contain',
-                                            width: '100%',
-                                            height: '100%',
-                                            borderRadius: 'var(--radius-3)'
-                                        }}
-                                    />
-                                
+                                <img
+                                    src={element.blockcontent}
+                                    alt="Blog content"
+                                    style={{
+                                        objectFit: 'contain',
+                                        width: '100%',
+                                        height: '100%',
+                                        borderRadius: 'var(--radius-3)'
+                                    }}
+                                />
+                            )}
+                            {element.blocktype === 'component' && (
+                                <ScheduleDemo/>
                             )}
                         </div>
                     ))}

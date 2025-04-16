@@ -1,7 +1,6 @@
 import React from 'react';
 import { Flex, Button, Dialog, Text, Avatar } from "@radix-ui/themes";
 import { PlusIcon } from "@radix-ui/react-icons";
-import axios from 'axios';
 
 class AddImageButton extends React.Component {
     constructor(props) {

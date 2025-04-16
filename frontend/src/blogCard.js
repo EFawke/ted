@@ -33,8 +33,8 @@ function BlogText({ content }) {
 }
 
 const BlogCard = (props) => {
-    const { user } = useAuth();
-    const isAdmin = user?.isAdmin;
+    // const { user } = useAuth();
+    const isAdmin = false;
     const [selected, setSelected] = useState(false);
 
     const selectCurrent = () => {
@@ -47,14 +47,15 @@ const BlogCard = (props) => {
     });
 
     return (
-        <Link href={isAdmin ? `/edit/${props.post.blogid}` : `/view/${props.post.blogid}`} 
-              style={{ textDecoration: "none" }}>
-            <Card onMouseEnter={selectCurrent} onMouseLeave={selectCurrent} 
-                  className={selected ? "" : "not_selected_project"}>
+        // <Link href={isAdmin ? `/edit/${props.post.blogid}` : `/view/${props.post.blogid}`}> 
+        //       style={{ textDecoration: "none" }}>
+            <Card>
                 <Flex direction="row" gap="1rem" style={{ padding: "0.5rem" }} width="100%">
                     <Flex direction="column" align="start" width="100%">
-                        <Flex>
-                            <Text mb="2" size="4" weight="medium">{props.post.blogtitle}</Text>
+                        <Flex
+                        onMouseEnter={selectCurrent} onMouseLeave={selectCurrent} 
+                        className={selected ? "" : "not_selected_project"}>
+                            <Link href={isAdmin ? `/edit/${props.post.blogid}` : `/view/${props.post.blogid}`} mb="2" size="4" weight="medium" style={{cursor: 'pointer'}}>{props.post.blogtitle}</Link>
                             <ArrowTopRightIcon 
                                 className={selected ? "icon_pos animate_up_right" : "icon_pos animate_down_left"} 
                                 height="15" width="15" 
@@ -70,7 +71,7 @@ const BlogCard = (props) => {
                     </Flex>
                 </Flex>
             </Card>
-        </Link>
+        // </Link>
     );
 };
 

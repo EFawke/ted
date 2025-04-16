@@ -225,3 +225,69 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.reaction-name.ppd-fullerene-fibers {
+  color: #FF6B6B;
+}
+.reaction-bar.ppd-fullerene-fibers {
+  background-color: #FF6B6B;
+}
+
+.reaction-name.fulleroferrocene {
+  color: #4ECDC4;
+}
+.reaction-bar.fulleroferrocene {
+  background-color: #4ECDC4;
+}
+
+.reaction-name.lanthanum-metallofullerene {
+  color: #FFD93D;
+}
+.reaction-bar.lanthanum-metallofullerene {
+  background-color: #FFD93D;
+}
+
+.reaction-name.fullerene-intercalated-graphite {
+  color: #C77DFF;
+}
+.reaction-bar.fullerene-intercalated-graphite {
+  background-color: #C77DFF;
+}
+
+.reaction-name.methanofullerene {
+  color: #FF922B;
+}
+.reaction-bar.methanofullerene {
+  background-color: #FF922B;
+}
+
+.reaction-name.graphene-nanoribbons {
+  color: #74C0FC;
+}
+.reaction-bar.graphene-nanoribbons {
+  background-color: #74C0FC;
+}
+
+.reaction-name.scandium-metallofullerene {
+  color: #63E6BE;
+}
+.reaction-bar.scandium-metallofullerene {
+  background-color: #63E6BE;
+}
+
+.reaction-name.carbon-86-epoxy-resin {
+  color: #F783AC;
+}
+.reaction-bar.carbon-86-epoxy-resin {
+  background-color: #F783AC;
+}
+
+@media (max-width: 840px) {
+  .top_container {
+    flex-direction: column;
+  }
+  #controls {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+}

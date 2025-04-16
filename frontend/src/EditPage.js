@@ -5,8 +5,11 @@ import { PlusIcon, MinusIcon } from "@radix-ui/react-icons";
 import axios from 'axios';
 import AddImageButton from './AddImageButton';
 import Header from './Header.js';
-import { AuthProvider } from './authentication/AuthContext.js';
+import  ScheduleDemo  from './components/ScheduleDemo.js';
+// import { AuthProvider } from './authentication/AuthContext.js';
+// import { useAuth } from './authentication/AuthContext.js';
 import { useAuth } from './authentication/AuthContext.js';
+
 
 
 function EditPage() {
@@ -27,8 +30,8 @@ function EditPage() {
 
   const navigate = useNavigate();
 
-  const { user, isAuthenticated } = useAuth();
-  const isAdmin = isAuthenticated && user?.isAdmin;
+  const { user } = useAuth();
+  const isAdmin = user?.isAdmin;
 
   useEffect(() => {
     if (isAdmin && id) {
@@ -38,13 +41,13 @@ function EditPage() {
           setTitle(postData.blogtitle);
           setElements(res.data);
           setHeaderImage(postData.headerimage || '');
-          
+
           // Handle tags parsing safely
           let tagsData = [];
           try {
             if (postData.tags) {
-              tagsData = typeof postData.tags === 'string' 
-                ? JSON.parse(postData.tags) 
+              tagsData = typeof postData.tags === 'string'
+                ? JSON.parse(postData.tags)
                 : postData.tags;
             }
           } catch (e) {
@@ -60,14 +63,9 @@ function EditPage() {
 
   if (!isAdmin) {
     return (
-      <Container size="4">
-        <AuthProvider>
-          <Header />
-        </AuthProvider>
-        <div>
-          <Heading size="8" weight="bold">Unauthorized</Heading>
-          <Text size="3">Admin permissions required</Text>
-        </div>
+      <Container>
+        <Heading>Unauthorized</Heading>
+        <Text>Admin permissions required</Text>
       </Container>
     );
   }
@@ -75,8 +73,8 @@ function EditPage() {
   const handleSave = (file, type = 'image') => {
     const isProduction = process.env.NODE_ENV === 'production';
     const baseURL = isProduction
-    ? 'https://tedfawke.com'
-    : 'http://localhost:8000';
+      ? 'https://tedfawke.com'
+      : 'http://localhost:8000';
 
     if (file) {
       setUploading(true);
@@ -109,8 +107,8 @@ function EditPage() {
   const handleHeaderImageSave = (file) => {
     const isProduction = process.env.NODE_ENV === 'production';
     const baseURL = isProduction
-    ? 'https://tedfawke.com'
-    : 'http://localhost:8000';
+      ? 'https://tedfawke.com'
+      : 'http://localhost:8000';
     if (file) {
       setHeaderImageUploading(true);
       const formData = new FormData();
@@ -140,8 +138,11 @@ function EditPage() {
     setElements([...elements, { blocktype: 'image', blockcontent: imageUrl, blockorder: elements.length }]);
   };
 
+  const addComponent = () => {
+    setElements([...elements, { blocktype: 'component', blockcontent: '', blockorder: elements.length }]);
+  }
+
   const submitPost = () => {
-    // console.log(tags);
     axios.post('/api/blog', {
       elements,
       title,
@@ -150,12 +151,12 @@ function EditPage() {
       action: id ? 'edit' : 'create',
       blogId: id
     })
-    .then((res) => {
-      if (res.status === 200) {
-        navigate(`/view/${id || res.data.id}`);
-      }
-    })
-    .catch(console.error);
+      .then((res) => {
+        if (res.status === 200) {
+          navigate(`/view/${id || res.data.id}`);
+        }
+      })
+      .catch(console.error);
   };
 
   const deletePost = () => {
@@ -188,15 +189,21 @@ function EditPage() {
     setElements(newElements);
   };
 
+  const modifyThisComponent = (e, index) => {
+    const newElements = [...elements];
+    newElements[index] = { blocktype: 'component', blockcontent: e.target.value, blockorder: index };
+    setElements(newElements);
+  };
+
   const removeElement = (index) => {
     setElements(elements.filter((_, i) => i !== index));
   };
 
   return (
     <Container size="4">
-      <AuthProvider>
-        <Header />
-      </AuthProvider>
+      {/* <AuthProvider> */}
+      <Header />
+      {/* </AuthProvider> */}
       <Flex direction="column" gap="4">
         <Flex width="100%" direction="row" mt="8" mb="5" align="end" style={{ justifyContent: 'space-between' }}>
           <Heading size="8" weight="bold">{id ? `Edit Post: ${id}` : 'Create New Post'}</Heading>
@@ -245,26 +252,48 @@ function EditPage() {
         />
         {elements.map((element, index) => (
           <Flex key={index} gap="4" direction="row" align="center" width="100%">
-            {element.blocktype === 'text' ? (
-              <TextArea
-                style={{ flex: 1 }}
-                value={element.blockcontent}
-                placeholder="Paragraph..."
-                size="3"
-                onChange={(e) => modifyThisElement(e, index)}
-              />
-            ) : (
-              <Flex direction="column" style={{ flex: 1 }} gap="2">
-                <img
-                  src={element.blockcontent}
-                  alt="Blog content"
-                  style={{ maxWidth: '100%', maxHeight: '400px' }}
+            {element.blocktype === 'text' && (
+              <>
+                <TextArea
+                  style={{ flex: 1 }}
+                  value={element.blockcontent}
+                  placeholder="Paragraph..."
+                  size="3"
+                  onChange={(e) => modifyThisElement(e, index)}
                 />
-              </Flex>
+                <IconButton onClick={() => removeElement(index)} color="red">
+                  <MinusIcon />
+                </IconButton>
+              </>
             )}
-            <IconButton onClick={() => removeElement(index)} color="red">
-              <MinusIcon />
-            </IconButton>
+            {element.blocktype === 'image' && (
+              <>
+                <Flex direction="column" style={{ flex: 1 }} gap="2">
+                  <img
+                    src={element.blockcontent}
+                    alt="Blog content"
+                    style={{ maxWidth: '100%', maxHeight: '400px' }}
+                  />
+                </Flex>
+                <IconButton onClick={() => removeElement(index)} color="red">
+                  <MinusIcon />
+                </IconButton>
+              </>
+            )}
+            {element.blocktype === 'component' && (
+              <>
+                <TextArea
+                  style={{ flex: 1 }}
+                  value={element.blockcontent}
+                  placeholder="Component Name..."
+                  size="3"
+                  onChange={(e) => modifyThisComponent(e, index)}
+                />
+                <IconButton onClick={() => removeElement(index)} color="red">
+                  <MinusIcon />
+                </IconButton>
+              </>
+            )}
           </Flex>
         ))}
         <Flex gap="4" direction="row">
@@ -276,6 +305,7 @@ function EditPage() {
             uploading={uploading}
             onSave={(file) => handleSave(file, 'image')}
           />
+          <Button onClick={addComponent}><PlusIcon /> Add Component</Button>
         </Flex>
       </Flex>
     </Container>

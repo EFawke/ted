@@ -1,39 +1,32 @@
-import { useGoogleLogin } from '@react-oauth/google';
-import { useAuth } from './AuthContext.js';
-import axios from 'axios';
-import '../css/App.css';
+import { useAuth } from './AuthContext';
+import apiClient from './api/client';
+import { GoogleLogin } from '@react-oauth/google';
 
-const GoogleLoginButton = () => {
+function GoogleLoginButton() {
   const { login } = useAuth();
 
-  const loginWithGoogle = useGoogleLogin({
-    onSuccess: async (tokenResponse) => {
-      const { access_token } = tokenResponse;
-      const { data } = await axios.get(
-        'https://www.googleapis.com/oauth2/v3/userinfo',
-        {
-          headers: {
-            Authorization: `Bearer ${access_token}`,
-          },
-        }
-      );
-      login(data, access_token); // Or your app-specific logic
-    },
-    flow: 'implicit', // token flow (uses iframe not popup)
-  });
-  
-  
+  const handleSuccess = async (credentialResponse) => {
+    try {
+      const response = await apiClient.post('/google', {
+        token: credentialResponse.credential
+      });
+      
+      login(response.data.user, response.data.token);
+    } catch (error) {
+      console.error('Login failed:', error);
+    }
+  };
 
   return (
-    <button className="google-signin-btn" onClick={loginWithGoogle}>
-      <img
-        className="google-icon"
-        src="https://developers.google.com/identity/images/g-logo.png"
-        alt="Google logo"
-      />
-      <span>Sign in with Google</span>
-    </button>
+    <GoogleLogin
+      onSuccess={handleSuccess}
+      onError={() => console.error('Login Failed')}
+      useOneTap
+      auto_select
+      shape="pill"
+      theme="filled_black"
+    />
   );
-};
+}
 
 export default GoogleLoginButton;
