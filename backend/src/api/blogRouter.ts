@@ -85,7 +85,7 @@ blogRouter.post('/', async (req, res) => {
         res.status(200).json({ message: 'Blog edited' });
     }
     if (action == 'fetchAllPosts') {
-        const query = 'SELECT * FROM blog';
+        const query = 'SELECT * FROM blog WHERE isLive = true ORDER BY blogId ASC';
         try {
             const result = await client
                 .query(query);
