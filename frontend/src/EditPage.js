@@ -33,6 +33,9 @@ function EditPage() {
   const { user } = useAuth();
   const isAdmin = user?.isAdmin;
 
+  console.log(isAdmin);
+  console.log(user);
+
   useEffect(() => {
     if (isAdmin && id) {
       axios.post('/api/blog', { action: 'fetchPost', blogId: id })
