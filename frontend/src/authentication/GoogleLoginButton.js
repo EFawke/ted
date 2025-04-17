@@ -23,8 +23,8 @@ function GoogleLoginButton() {
       onError={() => console.error('Login Failed')}
       useOneTap
       auto_select
-      shape="pill"
-      theme="filled_black"
+      shape="rectangular"
+      theme="outline"
     />
   );
 }
