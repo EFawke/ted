@@ -165,20 +165,17 @@ function EditPage() {
   // };
 
   const handleHeaderImageSave = (file) => {
-    const isProduction = process.env.NODE_ENV === 'production';
-    const baseURL = isProduction
-      ? 'https://tedfawke.com'
-      : 'http://localhost:8000';
     if (file) {
       setHeaderImageUploading(true);
       const formData = new FormData();
       formData.append('image', file);
-
+  
       axios.post('/api/upload', formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       })
         .then(response => {
-          setHeaderImage(`${baseURL}${response.data.url}`);
+          // Cloudinary URL is already complete - remove baseURL concatenation
+          setHeaderImage(response.data.url);
           setHeaderImageOpen(false);
           setHeaderImageUploading(false);
           setHeaderImageFile(null);
