@@ -85,7 +85,7 @@ blogRouter.post('/', async (req, res) => {
         res.status(200).json({ message: 'Blog edited' });
     }
     if (action == 'fetchAllPosts') {
-        const query = 'SELECT * FROM blog WHERE isLive = true ORDER BY blogId ASC';
+        const query = 'SELECT * FROM blog WHERE isLive = true ORDER BY blogId DESC';
         try {
             const result = await client
                 .query(query);
@@ -106,7 +106,7 @@ blogRouter.post('/', async (req, res) => {
         }
     }
     if (action == 'fetchPost') {
-        const query = `SELECT * FROM blog WHERE blogId = ${id} ORDER BY blockOrder DESC`;
+        const query = `SELECT * FROM blog WHERE blogId = ${id} ORDER BY blockOrder ASC`;
         try {
             const result = await client
                 .query(query);
