@@ -5,7 +5,7 @@ import { PlusIcon, MinusIcon } from "@radix-ui/react-icons";
 import axios from 'axios';
 import AddImageButton from './AddImageButton';
 import Header from './Header.js';
-import  ScheduleDemo  from './components/ScheduleDemo.js';
+import ScheduleDemo from './components/ScheduleDemo.js';
 // import { AuthProvider } from './authentication/AuthContext.js';
 // import { useAuth } from './authentication/AuthContext.js';
 import { useAuth } from './authentication/AuthContext.js';
@@ -71,11 +71,6 @@ function EditPage() {
   }
 
   const handleSave = (file, type = 'image') => {
-    const isProduction = process.env.NODE_ENV === 'production';
-    const baseURL = isProduction
-      ? 'https://tedfawke.com'
-      : 'http://localhost:8000';
-
     if (file) {
       setUploading(true);
 
@@ -86,7 +81,8 @@ function EditPage() {
         headers: { 'Content-Type': 'multipart/form-data' }
       })
         .then(response => {
-          const url = `${baseURL}${response.data.url}`;
+          // Use the full URL directly from Cloudinary
+          const url = response.data.url;
           if (type === 'headerImage') {
             setHeaderImage(url);
           } else {
@@ -103,6 +99,40 @@ function EditPage() {
         });
     }
   };
+
+  // const handleSave = (file, type = 'image') => {
+  //   const isProduction = process.env.NODE_ENV === 'production';
+  //   const baseURL = isProduction
+  //     ? 'https://tedfawke.com'
+  //     : 'http://localhost:8000';
+
+  //   if (file) {
+  //     setUploading(true);
+
+  //     const formData = new FormData();
+  //     formData.append('image', file);
+
+  //     axios.post('/api/upload', formData, {
+  //       headers: { 'Content-Type': 'multipart/form-data' }
+  //     })
+  //       .then(response => {
+  //         const url = `${baseURL}${response.data.url}`;
+  //         if (type === 'headerImage') {
+  //           setHeaderImage(url);
+  //         } else {
+  //           addImage(url);
+  //         }
+  //         setOpen(false);
+  //         setUploading(false);
+  //         setImage(null);
+  //         setFile(null);
+  //       })
+  //       .catch(error => {
+  //         console.error('Upload failed:', error);
+  //         setUploading(false);
+  //       });
+  //   }
+  // };
 
   const handleHeaderImageSave = (file) => {
     const isProduction = process.env.NODE_ENV === 'production';
