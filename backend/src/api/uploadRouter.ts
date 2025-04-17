@@ -70,4 +70,4 @@ uploadRouter.post('/', upload.single('image'), async (req:any, res:any) => {
   }
 });
 
-export default uploadRouter;
+module.exports = uploadRouter;
