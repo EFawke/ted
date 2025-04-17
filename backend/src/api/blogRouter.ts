@@ -106,7 +106,7 @@ blogRouter.post('/', async (req, res) => {
         }
     }
     if (action == 'fetchPost') {
-        const query = `SELECT * FROM blog WHERE blogId = ${id}`;
+        const query = `SELECT * FROM blog WHERE blogId = ${id} ORDER BY blockOrder DESC`;
         try {
             const result = await client
                 .query(query);
