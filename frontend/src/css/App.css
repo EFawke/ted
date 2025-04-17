@@ -290,4 +290,7 @@ code {
     margin-top: 1rem;
     margin-bottom: 1rem;
   }
+  .blog-container {
+    margin: 0 1rem;
+  }
 }

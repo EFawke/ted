@@ -48,11 +48,11 @@ function ViewPage() {
     });
 
     return (
-        <Container size="4">
+        <Container size="3" className="blog-container">
             {/* <AuthProvider> */}
             <Header loggedIn={loggedIn} />
             {/* </AuthProvider> */}
-            <Flex direction="column" gap="4" className="blog-container">
+            <Flex direction="column" gap="2" mb="5" pb="8">
                 {headerImage && (
                     <img
                         src={headerImage}
