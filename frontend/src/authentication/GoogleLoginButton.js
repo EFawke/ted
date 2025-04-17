@@ -10,7 +10,7 @@ function GoogleLoginButton() {
       const response = await apiClient.post('/google', {
         token: credentialResponse.credential
       });
-      
+
       login(response.data.user, response.data.token);
     } catch (error) {
       console.error('Login failed:', error);
@@ -18,14 +18,23 @@ function GoogleLoginButton() {
   };
 
   return (
+    // <GoogleLogin
+    //   onSuccess={handleSuccess}
+    //   onError={() => console.error('Login Failed')}
+    //   useOneTap
+    //   auto_select
+    //   shape="rectangular"
+    //   theme="outline"
+    // />
     <GoogleLogin
       onSuccess={handleSuccess}
       onError={() => console.error('Login Failed')}
       useOneTap
-      auto_select
       shape="rectangular"
-      theme="outline"
+      theme="filled_black"
+      text="signin_with"
     />
+
   );
 }
 
