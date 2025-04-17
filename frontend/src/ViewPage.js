@@ -52,7 +52,7 @@ function ViewPage() {
             {/* <AuthProvider> */}
             <Header loggedIn={loggedIn} />
             {/* </AuthProvider> */}
-            <Flex direction="column" gap="2" mb="5" pb="8">
+            <Flex direction="column" gap="4">
                 {headerImage && (
                     <img
                         src={headerImage}
@@ -69,7 +69,7 @@ function ViewPage() {
                 <Heading size="9" weight="bold" mb="4">{title}</Heading>
 
                 {tags.length > 0 && (
-                    <Flex gap="2" wrap="wrap" mb="5">
+                    <Flex gap="2" wrap="wrap" mb="4">
                         {tags.map((tag, index) => (
                             <Badge key={index} variant="soft" radius="full">
                                 {tag}
@@ -78,7 +78,7 @@ function ViewPage() {
                     </Flex>
                 )}
 
-                <Flex direction="column" gap="4">
+                <Flex direction="column" gap="2">
                     {elements.map((element, index) => (
                         <div key={index}>
                             {element.blocktype === 'text' && (
