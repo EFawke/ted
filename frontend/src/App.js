@@ -11,6 +11,7 @@ import Header from './Header.js';
 import { useEffect } from 'react';
 import ReactGA from "react-ga4";
 import { AuthProvider } from './authentication/AuthContext.js';
+import { useAuth } from './authentication/AuthContext.js';
 // import { useAuth } from './authentication/AuthContext.js';
 import { ProtectedRoute } from './ProtectedRoute';
 
@@ -27,8 +28,9 @@ function TrackPageViews() {
 }
 
 function Home() {
-  // const { user } = useAuth();
-  const isAdmin = false;
+  const { user } = useAuth();
+  const isAdmin = user?.isAdmin;
+  
   return (
     <Container size="4">
       <Flex gap="4" direction="row" justify="between" id="weird_flex_bro">

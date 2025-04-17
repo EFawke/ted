@@ -35,6 +35,10 @@ googleRouter.post('/', async (req: any, res: any) => {
       { expiresIn: '1h' }
     );
 
+    console.log('User authenticated:', payload.email);
+    console.log('JWT Token:', jwtToken);
+    console.log('Is Admin:', verifyAdmin(payload.email));
+
     res.status(200).json({
       user: {
         id: payload.sub,
