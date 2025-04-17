@@ -31,7 +31,7 @@ function GoogleLoginButton() {
       onError={() => console.error('Login Failed')}
       useOneTap
       shape="rectangular"
-      theme="filled_black"
+      theme="outline"
       text="signin_with"
     />
 

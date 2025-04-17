@@ -65,7 +65,7 @@ function App() {
   }, []);
 
   return (
-    <Theme appearance="dark" accentColor="blue" grayColor="mauve" scaling="90%">
+    <Theme appearance="light" accentColor="blue" grayColor="mauve" scaling="90%">
       <AuthProvider>
         <Router>
           <TrackPageViews />

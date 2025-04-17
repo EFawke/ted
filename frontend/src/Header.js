@@ -15,7 +15,7 @@ const Header = () => {
     };
 
     return (
-        <Flex 
+        <Flex
             gap="4"
             pt={location.pathname === "/" ? "0" : "4"}
             pb={location.pathname === "/" ? "0" : "4"}
@@ -68,9 +68,9 @@ const Header = () => {
                                     ? "Don't have an account? Register now."
                                     : "Log in to your account to continue."}
                             </Dialog.Description>
-
-                            <GoogleLoginButton />
-
+                            <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem' }}>
+                                <GoogleLoginButton />
+                            </div>
                             <Separator my="3" size="4" />
 
                             <Flex gap="3" mt="4" justify="between">
