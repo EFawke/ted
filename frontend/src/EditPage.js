@@ -36,26 +36,53 @@ function EditPage() {
   console.log(isAdmin);
   console.log(user);
 
+  // useEffect(() => {
+  //   if (isAdmin && id) {
+  //     axios.post('/api/blog', { action: 'fetchPost', blogId: id })
+  //       .then((res) => {
+  //         const postData = res.data[0];
+  //         setTitle(postData.blogtitle);
+  //         setElements(res.data);
+  //         setHeaderImage(postData.headerimage || '');
+
+  //         // Handle tags parsing safely
+  //         let tagsData = [];
+  //         try {
+  //           if (postData.tags) {
+  //             tagsData = typeof postData.tags === 'string'
+  //               ? JSON.parse(postData.tags)
+  //               : postData.tags;
+  //           }
+  //         } catch (e) {
+  //           console.error('Error parsing tags:', e);
+  //           // Fallback to splitting comma-separated string if exists
+  //           tagsData = postData.tags?.split(',').map(t => t.trim()) || [];
+  //         }
+  //         setTags(tagsData);
+  //       })
+  //       .catch(console.error);
+  //   }
+  // }, [id, isAdmin]);
   useEffect(() => {
     if (isAdmin && id) {
       axios.post('/api/blog', { action: 'fetchPost', blogId: id })
         .then((res) => {
-          const postData = res.data[0];
+          // Extract post metadata (first item) and content blocks (remaining items)
+          const [postData, ...blocks] = res.data;
+          
           setTitle(postData.blogtitle);
-          setElements(res.data);
+          setElements(blocks); // Only use the blocks, not the metadata
           setHeaderImage(postData.headerimage || '');
-
-          // Handle tags parsing safely
+  
+          // Handle tags parsing
           let tagsData = [];
           try {
             if (postData.tags) {
-              tagsData = typeof postData.tags === 'string'
-                ? JSON.parse(postData.tags)
+              tagsData = typeof postData.tags === 'string' 
+                ? JSON.parse(postData.tags) 
                 : postData.tags;
             }
           } catch (e) {
-            console.error('Error parsing tags:', e);
-            // Fallback to splitting comma-separated string if exists
             tagsData = postData.tags?.split(',').map(t => t.trim()) || [];
           }
           setTags(tagsData);

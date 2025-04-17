@@ -33,8 +33,8 @@ function BlogText({ content }) {
 }
 
 const BlogCard = (props) => {
-    // const { user } = useAuth();
-    const isAdmin = false;
+    const { user } = useAuth();
+    const isAdmin = user?.isAdmin;
     const [selected, setSelected] = useState(false);
 
     const selectCurrent = () => {

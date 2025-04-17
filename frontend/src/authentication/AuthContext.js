@@ -5,6 +5,7 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loading, setLoading] = useState(true); // Add loading state
 
   useEffect(() => {
     const initializeAuth = () => {
@@ -18,8 +19,10 @@ export const AuthProvider = ({ children }) => {
           setIsAuthenticated(true);
         }
       } catch (error) {
-        localStorage.removeItem('user');
-        localStorage.removeItem('authToken');
+        console.error('Auth initialization error:', error);
+        localStorage.clear();
+      } finally {
+        setLoading(false); // Ensure loading stops
       }
     };
     initializeAuth();
@@ -35,13 +38,17 @@ export const AuthProvider = ({ children }) => {
     setUser(userWithAdminFlag);
     setIsAuthenticated(true);
   };
-
+  
   const logout = () => {
     localStorage.removeItem('user');
     localStorage.removeItem('authToken');
     setUser(null);
     setIsAuthenticated(false);
   };
+
+  if (loading) {
+    return <div>Loading...</div>; // Or a spinner component
+  }
 
   return (
     <AuthContext.Provider value={{ user, isAuthenticated, login, logout }}>

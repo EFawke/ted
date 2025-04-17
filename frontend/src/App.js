@@ -72,15 +72,15 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/edit" element={
-              <ProtectedRoute adminOnly>
-                <EditPage />
-              </ProtectedRoute>
-            } />
-            <Route path="/edit/:id" element={
-              <ProtectedRoute adminOnly>
-                <EditPage />
-              </ProtectedRoute>
-            } />
+          <ProtectedRoute adminOnly>
+            <EditPage />
+          </ProtectedRoute>
+        } />
+        <Route path="/edit/:id" element={
+          <ProtectedRoute adminOnly>
+            <EditPage />
+          </ProtectedRoute>
+        } />
             <Route path="/view" element={<ViewPage />} />
             <Route path="/view/:id" element={<ViewPage />} />
           </Routes>
