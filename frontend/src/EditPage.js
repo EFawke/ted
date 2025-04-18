@@ -6,11 +6,7 @@ import axios from 'axios';
 import AddImageButton from './AddImageButton';
 import Header from './Header.js';
 import ScheduleDemo from './components/ScheduleDemo.js';
-// import { AuthProvider } from './authentication/AuthContext.js';
-// import { useAuth } from './authentication/AuthContext.js';
 import { useAuth } from './authentication/AuthContext.js';
-
-
 
 function EditPage() {
   const { id } = useParams();
@@ -33,36 +29,6 @@ function EditPage() {
   const { user } = useAuth();
   const isAdmin = user?.isAdmin;
 
-  console.log(isAdmin);
-  console.log(user);
-
-  // useEffect(() => {
-  //   if (isAdmin && id) {
-  //     axios.post('/api/blog', { action: 'fetchPost', blogId: id })
-  //       .then((res) => {
-  //         const postData = res.data[0];
-  //         setTitle(postData.blogtitle);
-  //         setElements(res.data);
-  //         setHeaderImage(postData.headerimage || '');
-
-  //         // Handle tags parsing safely
-  //         let tagsData = [];
-  //         try {
-  //           if (postData.tags) {
-  //             tagsData = typeof postData.tags === 'string'
-  //               ? JSON.parse(postData.tags)
-  //               : postData.tags;
-  //           }
-  //         } catch (e) {
-  //           console.error('Error parsing tags:', e);
-  //           // Fallback to splitting comma-separated string if exists
-  //           tagsData = postData.tags?.split(',').map(t => t.trim()) || [];
-  //         }
-  //         setTags(tagsData);
-  //       })
-  //       .catch(console.error);
-  //   }
-  // }, [id, isAdmin]);
   useEffect(() => {
     if (isAdmin && id) {
       axios.post('/api/blog', { action: 'fetchPost', blogId: id })
@@ -129,40 +95,6 @@ function EditPage() {
         });
     }
   };
-
-  // const handleSave = (file, type = 'image') => {
-  //   const isProduction = process.env.NODE_ENV === 'production';
-  //   const baseURL = isProduction
-  //     ? 'https://tedfawke.com'
-  //     : 'http://localhost:8000';
-
-  //   if (file) {
-  //     setUploading(true);
-
-  //     const formData = new FormData();
-  //     formData.append('image', file);
-
-  //     axios.post('/api/upload', formData, {
-  //       headers: { 'Content-Type': 'multipart/form-data' }
-  //     })
-  //       .then(response => {
-  //         const url = `${baseURL}${response.data.url}`;
-  //         if (type === 'headerImage') {
-  //           setHeaderImage(url);
-  //         } else {
-  //           addImage(url);
-  //         }
-  //         setOpen(false);
-  //         setUploading(false);
-  //         setImage(null);
-  //         setFile(null);
-  //       })
-  //       .catch(error => {
-  //         console.error('Upload failed:', error);
-  //         setUploading(false);
-  //       });
-  //   }
-  // };
 
   const handleHeaderImageSave = (file) => {
     if (file) {

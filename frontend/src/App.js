@@ -14,6 +14,7 @@ import { AuthProvider } from './authentication/AuthContext.js';
 import { useAuth } from './authentication/AuthContext.js';
 // import { useAuth } from './authentication/AuthContext.js';
 import { ProtectedRoute } from './ProtectedRoute';
+import Login from './login.js';
 
 const trackingId = "G-YB6KV33SG7";
 
@@ -30,7 +31,7 @@ function TrackPageViews() {
 function Home() {
   const { user } = useAuth();
   const isAdmin = user?.isAdmin;
-  
+
   return (
     <Container size="4">
       <Flex gap="4" direction="row" justify="between" id="weird_flex_bro">
@@ -65,22 +66,23 @@ function App() {
   }, []);
 
   return (
-    <Theme appearance="light" accentColor="blue" grayColor="mauve" scaling="90%">
+    <Theme appearance="dark" accentColor="blue" grayColor="mauve" scaling="90%">
       <AuthProvider>
         <Router>
           <TrackPageViews />
           <Routes>
+            <Route path="/login" element={<Login />} />
             <Route path="/" element={<Home />} />
             <Route path="/edit" element={
-          <ProtectedRoute adminOnly>
-            <EditPage />
-          </ProtectedRoute>
-        } />
-        <Route path="/edit/:id" element={
-          <ProtectedRoute adminOnly>
-            <EditPage />
-          </ProtectedRoute>
-        } />
+              <ProtectedRoute adminOnly>
+                <EditPage />
+              </ProtectedRoute>
+            } />
+            <Route path="/edit/:id" element={
+              <ProtectedRoute adminOnly>
+                <EditPage />
+              </ProtectedRoute>
+            } />
             <Route path="/view" element={<ViewPage />} />
             <Route path="/view/:id" element={<ViewPage />} />
           </Routes>

@@ -1,6 +1,6 @@
 // BlogCard.js
 import "@radix-ui/themes/styles.css";
-import { Card, Text, Link, Flex, Badge } from "@radix-ui/themes";
+import { Card, Text, Link, Flex, Badge, Avatar } from "@radix-ui/themes";
 import { ArrowTopRightIcon } from "@radix-ui/react-icons"
 import './css/App.css';
 import { useState } from "react";
@@ -46,32 +46,44 @@ const BlogCard = (props) => {
         return date.toDateString()
     });
 
+    const truncatedContent = (text) => {
+        const maxLength = 100; // Set the maximum length for truncation
+        if (text.length > maxLength) {
+            return text.substring(0, maxLength) + "...";
+        }
+        return text;
+    }
+
+    const tags = props.post.tags.slice(0, 3); // Limit the number of tags to 3
+
+    console.log(props);
+
     return (
-        // <Link href={isAdmin ? `/edit/${props.post.blogid}` : `/view/${props.post.blogid}`}> 
-        //       style={{ textDecoration: "none" }}>
-            <Card>
-                <Flex direction="row" gap="1rem" style={{ padding: "0.5rem" }} width="100%">
-                    <Flex direction="column" align="start" width="100%">
-                        <Flex
-                        onMouseEnter={selectCurrent} onMouseLeave={selectCurrent} 
-                        className={selected ? "" : "not_selected_project"}>
-                            <Link href={isAdmin ? `/edit/${props.post.blogid}` : `/view/${props.post.blogid}`} mb="2" size="4" weight="medium" style={{cursor: 'pointer'}}>{props.post.blogtitle}</Link>
-                            <ArrowTopRightIcon 
-                                className={selected ? "icon_pos animate_up_right" : "icon_pos animate_down_left"} 
-                                height="15" width="15" 
-                                style={{ paddingLeft: ".5rem" }} />
+        <Card>
+            <Flex direction="row" gap="1rem" style={{ padding: "0.5rem" }} width="100%">
+                <img src={props.post.headerimage} alt="Blog Image" style={{width: "30%", objectFit: "cover", borderRadius: "calc(8px*0.9*1)"}}/>
+                <Flex direction="column" align="start" width="100%">
+                    <Flex mb="2" gap = "2" direction="row" align="center">
+                        <Link href={isAdmin ? `/edit/${props.post.blogid}` : `/view/${props.post.blogid}`} size="4" weight="medium" style={{ cursor: 'pointer' }}>{props.post.blogtitle}</Link>
+                    </Flex>
+                    <Flex maxWidth="100%" align="center" gap="5" direction="row">
+                        <Text>{truncatedContent(props.post.blockcontent)}</Text>
+                    </Flex>
+                    <Flex mt="4" gap="2" direction="row" width="100%" justify="between" align="center">
+                        <Flex className="tools_container" gap="3" direction="row" align="center">
+                            {tags.map((tag) => {
+                                return (
+                                    <Badge key={tag} variant="soft" size="2" color="blue">
+                                        {tag}
+                                    </Badge>
+                                )
+                            })}
                         </Flex>
-                        <Flex maxWidth="100%">
-                            <BlogText content={props.post.blockcontent} />
-                        </Flex>
-                        <Flex className="tools_container" mt="2" gap="2" direction="row" width="100%" justify="end">
-                            {props.post.isLive === false ? <Badge color="orange">Archived</Badge> : null}
-                            <Text size="3" weight="light">{datePosted}</Text>
-                        </Flex>
+                        <Text size="3" weight="light">{datePosted}</Text>
                     </Flex>
                 </Flex>
-            </Card>
-        // </Link>
+            </Flex>
+        </Card>
     );
 };
 

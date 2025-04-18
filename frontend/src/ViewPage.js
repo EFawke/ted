@@ -49,9 +49,7 @@ function ViewPage() {
 
     return (
         <Container size="3" className="blog-container">
-            {/* <AuthProvider> */}
             <Header loggedIn={loggedIn} />
-            {/* </AuthProvider> */}
             <Flex direction="column" gap="4">
                 {headerImage && (
                     <img
@@ -78,7 +76,7 @@ function ViewPage() {
                     </Flex>
                 )}
 
-                <Flex direction="column" gap="2">
+                <Flex direction="column">
                     {elements.map((element, index) => (
                         <div key={index}>
                             {element.blocktype === 'text' && (

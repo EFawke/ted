@@ -27,7 +27,7 @@ const Header = () => {
         >
             {location.pathname !== "/" && <Link href="/" size="6">Go back</Link>}
 
-            <Dialog.Root>
+            {/* <Dialog.Root>
                 <Dialog.Trigger>
                     {isAuthenticated ? (
                         <Flex align="center" gap="2">
@@ -84,7 +84,7 @@ const Header = () => {
                         </>
                     )}
                 </Dialog.Content>
-            </Dialog.Root>
+            </Dialog.Root> */}
         </Flex>
     );
 };

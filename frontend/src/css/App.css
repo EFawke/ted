@@ -132,8 +132,8 @@
   font-size: 1.1rem;
 }
 
-.blog-content p {
-  margin-bottom: 1.5rem;
+.blog-content > p > strong {
+  font-size: 1.3rem;
 }
 
 .blog-content img {
@@ -293,4 +293,8 @@ code {
   .blog-container {
     margin: 0 1rem;
   }
+}
+
+.tools_container {
+  overflow: scroll;
 }

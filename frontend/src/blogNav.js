@@ -1,15 +1,11 @@
 // BlogNav.js
 import React from "react";
-import { Box, Container, Flex, Section, Heading, Text, Card } from "@radix-ui/themes";
+import { Flex } from "@radix-ui/themes";
 import "./css/App.css";
 import BlogCard from "./blogCard";
 import axios from 'axios';
-import BlogNavHeader from "./blogNavHeader";
-// import { AuthContext } from './authentication/AuthContext.js';
-// import { useAuth } from './AuthContext.js';
 
 class BlogNav extends React.Component {
-    // static contextType = AuthContext;
     constructor(props) {
         super(props);
         this.state = {
@@ -50,9 +46,7 @@ class BlogNav extends React.Component {
     render() {
         return (
             <Flex direction="column" gap="4" mt="6">
-                <BlogNavHeader />
                 {this.state.posts.map((post) => {
-                    // console.log(post);
                     return (
                         <BlogCard key={post.id} post={post} isLive={post.islive} />
                     )
