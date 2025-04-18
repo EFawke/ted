@@ -69,7 +69,7 @@ function ViewPage() {
                 {tags.length > 0 && (
                     <Flex gap="2" wrap="wrap" mb="4">
                         {tags.map((tag, index) => (
-                            <Badge key={index} variant="soft" radius="full">
+                            <Badge key={index} variant="soft" size="2" color="blue">
                                 {tag}
                             </Badge>
                         ))}

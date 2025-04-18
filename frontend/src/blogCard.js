@@ -69,7 +69,7 @@ const BlogCard = (props) => {
                     <Flex maxWidth="100%" align="center" gap="5" direction="row">
                         <Text>{truncatedContent(props.post.blockcontent)}</Text>
                     </Flex>
-                    <Flex mt="4" gap="2" direction="row" width="100%" justify="between" align="center">
+                    <Flex mt="4" gap="2" direction="row" width="100%" justify="between" align="end">
                         <Flex className="tools_container" gap="3" direction="row" align="center">
                             {tags.map((tag) => {
                                 return (
@@ -79,7 +79,7 @@ const BlogCard = (props) => {
                                 )
                             })}
                         </Flex>
-                        <Text size="3" weight="light">{datePosted}</Text>
+                        <Text size="2" weight="light">{datePosted}</Text>
                     </Flex>
                 </Flex>
             </Flex>
