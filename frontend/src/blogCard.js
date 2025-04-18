@@ -60,16 +60,16 @@ const BlogCard = (props) => {
 
     return (
         <Card>
-            <Flex direction="row" gap="1rem" style={{ padding: "0.5rem" }} width="100%">
-                <img src={props.post.headerimage} alt="Blog Image" style={{width: "30%", objectFit: "cover", borderRadius: "calc(8px*0.9*1)"}}/>
+            <Flex className="blog_container_main_flex" gap="1rem" style={{ padding: "0.5rem" }} width="100%">
+                <img className="blog_thumbnail" src={props.post.headerimage} alt="Blog Image" style={{ objectFit: "cover", borderRadius: "calc(8px*0.9*1)" }} />
                 <Flex direction="column" align="start" width="100%">
-                    <Flex mb="2" gap = "2" direction="row" align="center">
+                    <Flex mb="2" gap="2" direction="row" align="center">
                         <Link href={isAdmin ? `/edit/${props.post.blogid}` : `/view/${props.post.blogid}`} size="4" weight="medium" style={{ cursor: 'pointer' }}>{props.post.blogtitle}</Link>
                     </Flex>
                     <Flex maxWidth="100%" align="center" gap="5" direction="row">
                         <Text>{truncatedContent(props.post.blockcontent)}</Text>
                     </Flex>
-                    <Flex mt="4" gap="2" direction="row" width="100%" justify="between" align="end">
+                    <Flex mt="4" gap="2" direction="row" width="100%" className="blog_card_details_container" align="end">
                         <Flex className="tools_container" gap="3" direction="row" align="center">
                             {tags.map((tag) => {
                                 return (
@@ -80,6 +80,15 @@ const BlogCard = (props) => {
                             })}
                         </Flex>
                         <Text size="2" weight="light">{datePosted}</Text>
+                    </Flex>
+                    <Flex mt="4" className="tools_container_mobile" gap="3" direction="row" align="center">
+                        {tags.map((tag) => {
+                            return (
+                                <Badge key={tag} variant="soft" size="2" color="blue">
+                                    {tag}
+                                </Badge>
+                            )
+                        })}
                     </Flex>
                 </Flex>
             </Flex>

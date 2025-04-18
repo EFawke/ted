@@ -2,7 +2,6 @@
 import "@radix-ui/themes/styles.css";
 import { Theme, ThemePanel, Container, Flex, Section, Heading, HoverCard, Text, Link } from "@radix-ui/themes";
 import { BrowserRouter as Router, Routes, Route, useParams, useLocation } from 'react-router-dom';
-import './css/App.css';
 import Links from "./links.js";
 import BlogNav from "./blogNav.js";
 import EditPage from './EditPage.js';
@@ -15,6 +14,7 @@ import { useAuth } from './authentication/AuthContext.js';
 // import { useAuth } from './authentication/AuthContext.js';
 import { ProtectedRoute } from './ProtectedRoute';
 import Login from './login.js';
+import './css/App.css';
 
 const trackingId = "G-YB6KV33SG7";
 
