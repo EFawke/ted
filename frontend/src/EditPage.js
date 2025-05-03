@@ -1,16 +1,32 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Box, Heading, Container, TextArea, TextField, Flex, Button, DropdownMenu, Link, IconButton, Text } from "@radix-ui/themes";
-import { PlusIcon, MinusIcon } from "@radix-ui/react-icons";
+import { Box, Heading, Container, TextArea, TextField, Flex, Button, DropdownMenu, Link, IconButton, Text, Card } from "@radix-ui/themes";
+import { PlusIcon, MinusIcon, InfoCircledIcon } from "@radix-ui/react-icons";
 import axios from 'axios';
 import AddImageButton from './AddImageButton';
 import Header from './Header.js';
 import ScheduleDemo from './components/ScheduleDemo.js';
 import { useAuth } from './authentication/AuthContext.js';
 
+function ErrorsBanner({ errors }) {
+  return (
+    <Card variant="surface">
+      <Flex direction="column" gap="2">
+        {errors.map((error, index) => (
+          <Flex key={index} align="center" gap="2">
+            <InfoCircledIcon color="red" />
+            <Text color="red">{error.message}</Text>
+          </Flex>
+        ))}
+      </Flex>
+    </Card>
+  );
+}
+
 function EditPage() {
   const { id } = useParams();
   const [elements, setElements] = useState([]);
+  const [errors, setErrors] = useState([]);
   const [title, setTitle] = useState('');
   const [headerImage, setHeaderImage] = useState('');
   const [tags, setTags] = useState([]);
@@ -21,31 +37,27 @@ function EditPage() {
   const [headerImageFile, setHeaderImageFile] = useState(null);
   const [headerImageOpen, setHeaderImageOpen] = useState(false);
   const [headerImageUploading, setHeaderImageUploading] = useState(false);
-
-  const isProduction = process.env.NODE_ENV === 'production';
-
   const navigate = useNavigate();
-
   const { user } = useAuth();
   const isAdmin = user?.isAdmin;
 
   useEffect(() => {
     if (isAdmin && id) {
-      axios.post('/api/blog', { action: 'fetchPost', blogId: id })
+      axios.post('/api/blog/getPost', { blogId: id })
         .then((res) => {
-          // Extract post metadata (first item) and content blocks (remaining items)
-          const [postData, ...blocks] = res.data;
-          
-          setTitle(postData.blogtitle);
-          setElements(blocks); // Only use the blocks, not the metadata
+          const postData = res.data[0];
+          const blocks = [];
+          for (let i = 0; i < res.data.length; i++) {
+            blocks.push(res.data[i])
+          }
+          setTitle(res.data[0].blogtitle);
+          setElements(blocks);
           setHeaderImage(postData.headerimage || '');
-  
-          // Handle tags parsing
           let tagsData = [];
           try {
             if (postData.tags) {
-              tagsData = typeof postData.tags === 'string' 
-                ? JSON.parse(postData.tags) 
+              tagsData = typeof postData.tags === 'string'
+                ? JSON.parse(postData.tags)
                 : postData.tags;
             }
           } catch (e) {
@@ -101,7 +113,7 @@ function EditPage() {
       setHeaderImageUploading(true);
       const formData = new FormData();
       formData.append('image', file);
-  
+
       axios.post('/api/upload', formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       })
@@ -132,24 +144,29 @@ function EditPage() {
   }
 
   const submitPost = () => {
-    axios.post('/api/blog', {
+    const route = id ? `edit` : `create`
+    axios.post(`/api/blog/${route}`, {
       elements,
       title,
       headerImage,
       tags: tags.filter(t => t.trim() !== ''),
-      action: id ? 'edit' : 'create',
-      blogId: id
+      id: id
     })
       .then((res) => {
-        if (res.status === 200) {
-          navigate(`/view/${id || res.data.id}`);
-        }
+        setErrors([])
+        navigate(`/post/${id || res.data.id}`);
       })
-      .catch(console.error);
+      .catch((err) => {
+        setErrors((prevErrors) => [
+          ...prevErrors,
+          { message: err?.response?.data?.message || err.message || 'An unknown error occurred.' }
+        ]);
+      });
+      
   };
 
   const deletePost = () => {
-    axios.post('/api/blog', { action: 'delete', blogId: id })
+    axios.post('/api/blog/delete', { blogId: id })
       .then((res) => {
         if (res.status === 200) {
           window.location.href = '/';
@@ -190,9 +207,8 @@ function EditPage() {
 
   return (
     <Container size="4">
-      {/* <AuthProvider> */}
       <Header />
-      {/* </AuthProvider> */}
+      {errors.length > 0 && <ErrorsBanner errors={errors} />}
       <Flex direction="column" gap="4">
         <Flex width="100%" direction="row" mt="8" mb="5" align="end" style={{ justifyContent: 'space-between' }}>
           <Heading size="8" weight="bold">{id ? `Edit Post: ${id}` : 'Create New Post'}</Heading>
@@ -229,8 +245,6 @@ function EditPage() {
             />
           )}
         </Flex>
-
-        {/* Tags Input */}
         <TextField.Root
           placeholder="Tags (comma-separated)"
           value={tags.join(', ')}

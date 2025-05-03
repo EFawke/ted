@@ -83,8 +83,8 @@ function App() {
                 <EditPage />
               </ProtectedRoute>
             } />
-            <Route path="/view" element={<ViewPage />} />
-            <Route path="/view/:id" element={<ViewPage />} />
+            <Route path="/post" element={<ViewPage />} />
+            <Route path="/post/:id" element={<ViewPage />} />
           </Routes>
         </Router>
       </AuthProvider>

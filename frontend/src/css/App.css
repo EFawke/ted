@@ -282,14 +282,6 @@ code {
   background-color: #F783AC;
 }
 
-/* .tools_container_mobile {
-  display: none !important;
-}
-
-.blog_card_details_container {
-  justify-content: "between";
-} */
-
 .blog_thumbnail {
   width: 30%;
 }
@@ -330,17 +322,4 @@ code {
   .blog_container_main_flex{
     flex-direction: column !important;
   }
-  /* .tools_container_mobile {
-    display: flex;
-  }
-  .blog_card_details_container {
-    justify-content: "end";
-  }
-  .tools_container {
-    display: none;
-  } */
 }
-
-/* .tools_container {
-  overflow: scroll;
-} */

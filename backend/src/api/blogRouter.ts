@@ -1,140 +1,69 @@
 import express from 'express';
+import { startClient } from './blogRouterMethods/utils';
+import { readAll, getPost } from './blogRouterMethods/read';
+import deletePost from './blogRouterMethods/delete';
+import createPost from './blogRouterMethods/create';
+import editPost from './blogRouterMethods/edit';
+import { Request } from 'express';
 const blogRouter = express.Router();
-const { Client } = require('pg');
-const axios = require('axios');
 
-let client;
-if (!process.env.DATABASE_URL) {
-    client = new Client();
-} else {
-    client = new Client({
-        connectionString: process.env.DATABASE_URL,
-        ssl: { rejectUnauthorized: false },
-        allowExitOnIdle: true
-    });
-}
-client.connect();
+let client = startClient();
 
 blogRouter.use(express.json());
 
-const getMaxIdFromBlogs = async () => {
-    const query = 'SELECT MAX(blogId) FROM blog';
+blogRouter.post('/getAll', async (req, res) => {
     try {
-        const result = await client
-            .query(query);
-        return result.rows[0];
-    } catch (err: any) {
+        const posts = await readAll(client).then((response: any) => response)
+        res.status(200).send(posts);
+    }
+    catch (err) {
         console.log(err);
+        res.send(err);
     }
-};
+})
 
+blogRouter.post('/getPost', async (req, res) => {
+    try {
+        const post = await getPost(client, req.body.blogId).then((response: any) => response)
+        res.status(200).send(post)
+    }
+    catch (err) {
+        console.log(err);
+        res.send(err);
+    }
+})
 
-blogRouter.post('/', async (req, res) => {
-    const title = req.body.title;
-    const elements = req.body.elements;
-    const action = req.body.action;
-    const id = req.body.blogId;
+blogRouter.post('/delete', async (req, res) => {
+    try {
+        await deletePost(client, req.body.blogId)
+        res.status(200).send();
+    }
+    catch (err) {
+        console.log(err);
+        res.status(500).send();
+    }
+})
 
-    if (action == 'create') {
-        const headerImage = req.body.headerImage || '';
-        const tags = req.body.tags || [];
-        
-        let id = await getMaxIdFromBlogs();
-        id = id.max ? Number(id.max) + 1 : 1;
-        
-        // Add headerImage and tags to the insert
-        let query = 'INSERT INTO blog (blogTitle, blogId, blockType, blockOrder, blockContent, isLive, headerImage, tags) VALUES ';
-        for (let i = 0; i < elements.length; i++) {
-            query += `(
-                '${title.replace(/'/g, "''")}', 
-                ${id}, 
-                '${elements[i].blocktype.replace(/'/g, "''")}', 
-                ${elements[i].blockorder}, 
-                '${elements[i].blockcontent.replace(/'/g, "''")}', 
-                ${true},
-                '${headerImage.replace(/'/g, "''")}',
-                '${JSON.stringify(tags).replace(/'/g, "''")}'
-            )`;
-            if (i != elements.length - 1) query += ', ';
-        }
-        client.query(query);
-        res.status(200).json({ message: 'Blog created' });
+blogRouter.post('/create', async (req, res) => {
+    const idResult = await client.query('SELECT MAX(blogId) as max FROM blog');
+    const id = idResult.rows[0].max ? Number(idResult.rows[0].max) + 1 : 1;
+    try {
+        await createPost(req.body, client, id)
+        res.status(200).send({id: id});
     }
-    if (action == 'edit') {
-        const headerImage = req.body.headerImage || '';
-        const tags = req.body.tags || [];
-        
-        let query = `DELETE FROM blog WHERE blogId = ${id}`;
-        await client.query(query);
-        
-        query = 'INSERT INTO blog (blogTitle, blogId, blockType, blockOrder, blockContent, isLive, headerImage, tags) VALUES ';
-        for (let i = 0; i < elements.length; i++) {
-            query += `(
-                '${title.replace(/'/g, "''")}', 
-                ${id}, 
-                '${elements[i].blocktype.replace(/'/g, "''")}', 
-                ${elements[i].blockorder}, 
-                '${elements[i].blockcontent.replace(/'/g, "''")}', 
-                ${true},
-                '${headerImage.replace(/'/g, "''")}',
-                '${JSON.stringify(tags).replace(/'/g, "''")}'
-            )`;
-            if (i != elements.length - 1) query += ', ';
-        }
-        client.query(query);
-        res.status(200).json({ message: 'Blog edited' });
+    catch (err) {
+        res.status(500).send(err);
     }
-    if (action == 'fetchAllPosts') {
-        const query = 'SELECT * FROM blog WHERE isLive = true ORDER BY blogId DESC';
-        try {
-            const result = await client
-                .query(query);
-            res.status(200).json(result.rows);
-        } catch (err: any) {
-            console.log(err);
-        }
+})
 
+blogRouter.post('/edit', async (req, res) => {
+    try {
+        const id = await editPost(req.body, client)
+        res.status(200).send({id: id});
     }
-    if (action == 'delete') {
-        const query = `DELETE FROM blog WHERE blogId = ${id}`;
-        try {
-            const result = await client
-                .query(query);
-            res.status(200).json(result.rows);
-        } catch (err: any) {
-            console.log(err);
-        }
+    catch (err) {
+        res.status(500).send(err);
     }
-    if (action == 'fetchPost') {
-        const query = `SELECT * FROM blog WHERE blogId = ${id} ORDER BY blockOrder ASC`;
-        try {
-            const result = await client
-                .query(query);
-            res.status(200).json(result.rows);
-        } catch (err: any) {
-            console.log(err);
-        }
-    }
-    if (action == 'archive') {
-        const query = `UPDATE blog SET isLive = false WHERE blogId = ${id}`;
-        try {
-            const result = await client
-                .query(query);
-            res.status(200).json(result.rows);
-        } catch (err: any) {
-            console.log(err);
-        }
-    }
-    if (action == 'publish') {
-        const query = `UPDATE blog SET isLive = true WHERE blogId = ${id}`;
-        try {
-            const result = await client
-                .query(query);
-            res.status(200).json(result.rows);
-        } catch (err: any) {
-            console.log(err);
-        }
-    }
-});
+})
 
 module.exports = blogRouter;

@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Box, Heading, Container, Text, AspectRatio, Flex, Link, Badge } from "@radix-ui/themes";
+import { Heading, Container, Flex, Badge } from "@radix-ui/themes";
 import axios from 'axios';
 import Header from './Header.js';
-import { AuthProvider } from './authentication/AuthContext.js';
 import ReactMarkdown from 'react-markdown';
 import ScheduleDemo from './components/ScheduleDemo.js';
 import './css/App.css';
@@ -16,30 +15,28 @@ function ViewPage() {
     const [tags, setTags] = useState([]);
 
     useEffect(() => {
-        if (id) {
-            axios.post('/api/blog', { action: 'fetchPost', blogId: id })
-                .then((res) => {
-                    const postData = res.data[0];
-                    setTitle(postData.blogtitle);
-                    setElements(res.data);
-                    setHeaderImage(postData.headerimage || '');
+        axios.post(`/api/blog/getPost`, { blogId: id })
+            .then((res) => {
+                const postData = res.data[0];
+                setTitle(postData.blogtitle);
+                setElements(res.data);
+                setHeaderImage(postData.headerimage || '');
 
-                    // Handle tags parsing safely
-                    let tagsData = [];
-                    try {
-                        if (postData.tags) {
-                            tagsData = typeof postData.tags === 'string'
-                                ? JSON.parse(postData.tags)
-                                : postData.tags;
-                        }
-                    } catch (e) {
-                        console.error('Error parsing tags:', e);
-                        tagsData = postData.tags?.split(',').map(t => t.trim()) || [];
+                // Handle tags parsing safely
+                let tagsData = [];
+                try {
+                    if (postData.tags) {
+                        tagsData = typeof postData.tags === 'string'
+                            ? JSON.parse(postData.tags)
+                            : postData.tags;
                     }
-                    setTags(tagsData);
-                })
-                .catch(console.error);
-        }
+                } catch (e) {
+                    console.error('Error parsing tags:', e);
+                    tagsData = postData.tags?.split(',').map(t => t.trim()) || [];
+                }
+                setTags(tagsData);
+            })
+            .catch(console.error);
     }, [id]);
 
     const [loggedIn, setIsLoggedIn] = useState(() => {
@@ -77,8 +74,8 @@ function ViewPage() {
                 )}
 
                 <Flex direction="column">
-                    {elements.map((element, index) => (
-                        <div key={index}>
+                    {elements.map((element) => (
+                        <div key={element.blockorder}>
                             {element.blocktype === 'text' && (
                                 <div className="blog-content">
                                     <ReactMarkdown>
@@ -100,7 +97,7 @@ function ViewPage() {
                                 />
                             )}
                             {element.blocktype === 'component' && (
-                                <ScheduleDemo/>
+                                <ScheduleDemo />
                             )}
                         </div>
                     ))}

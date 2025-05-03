@@ -15,17 +15,14 @@ class BlogNav extends React.Component {
 
     componentDidMount() {
         const isAdmin = this.props.isAdmin;
-        axios.post('/api/blog', { action: 'fetchAllPosts' })
+        axios.post('/api/blog/getAll')
             .then((response) => {
                 let blogs = [];
                 for (let i = 0; i < response.data.length; i++) {
                     if (isAdmin) {
-                        if (response.data[i].blockorder === 0) {
                             blogs.push(response.data[i]);
-                        }
-                    }
-                    else {
-                        if (response.data[i].blockorder === 0 && response.data[i].islive == true) {
+                    } else {
+                        if (response.data[i].islive == true) {
                             blogs.push(response.data[i]);
                         }
                     }

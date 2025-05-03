@@ -56,15 +56,13 @@ const BlogCard = (props) => {
 
     const tags = props.post.tags.slice(0, 3); // Limit the number of tags to 3
 
-    console.log(props);
-
     return (
         <Card>
             <Flex className="blog_container_main_flex" gap="1rem" style={{ padding: "0.5rem" }} width="100%">
                 <img className="blog_thumbnail" src={props.post.headerimage} alt="Blog Image" style={{ objectFit: "cover", borderRadius: "calc(8px*0.9*1)" }} />
                 <Flex direction="column" align="start" width="100%">
                     <Flex mb="2" gap="2" direction="row" align="center">
-                        <Link href={isAdmin ? `/edit/${props.post.blogid}` : `/view/${props.post.blogid}`} size="4" weight="medium" style={{ cursor: 'pointer' }}>{props.post.blogtitle}</Link>
+                        <Link href={isAdmin ? `/edit/${props.post.blogid}` : `/post/${props.post.blogid}`} size="4" weight="medium" style={{ cursor: 'pointer' }}>{props.post.blogtitle}</Link>
                     </Flex>
                     <Flex maxWidth="100%" align="center" gap="5" direction="row">
                         <Text>{truncatedContent(props.post.blockcontent)}</Text>
