@@ -18,7 +18,7 @@ const Links = () => {
                     <Link href="https://github.com/EFawke">
                         <GitHubLogoIcon height="30" width="30" className="socials" />
                     </Link>
-                    <Link href="https://www.linkedin.com/in/eduardo-fawke-34b658231/">
+                    <Link href="https://www.linkedin.com/in/ted-fawke-34b658231/">
                         <LinkedInLogoIcon height="30" width="30" className="socials" />
                     </Link>
                 </Flex>
