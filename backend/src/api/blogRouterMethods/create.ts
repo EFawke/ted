@@ -18,7 +18,6 @@ export default async function createPost(reqBody: any, client: Client, id: numbe
         return res.rows || [];
     }
     catch (err) {
-        console.log("Error querying blog:", err);
-        return [];
+        throw new Error("Something went wrong!");
     }
 }

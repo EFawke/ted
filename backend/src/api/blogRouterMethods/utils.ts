@@ -14,7 +14,7 @@ export function startClient(){
     return client;
 };
 
-type BlogBlock = {
+export type BlogBlock = {
     blocktype: string;
     blockcontent: string;
     blockorder: number;
