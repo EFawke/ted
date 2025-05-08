@@ -1,6 +1,11 @@
 import { QueryResult, Client } from 'pg';
 import { writeQuery } from './utils'
 
+const getOriginalDate = async (id: number, client :Client) => {
+    const date = await client.query("SELECT blogDate FROM blog WHERE blogId = " + id);
+    return date.rows[0].blogdate;
+}
+
 export default async function editPost(reqBody: any, client: Client) {
     const title = reqBody.title;
     const elements = reqBody.elements;
@@ -12,8 +17,11 @@ export default async function editPost(reqBody: any, client: Client) {
         throw new Error("No Elements Added");
     }
 
-    const { query, params } = writeQuery(elements, title, id, tags, headerImage);
+    const date = await getOriginalDate(id, client);
 
+    console.log(date)
+
+    const { query, params } = writeQuery(elements, title, id, tags, headerImage, date);
     await client.query(`DELETE FROM blog WHERE blogid = ${id}`);
 
     try {

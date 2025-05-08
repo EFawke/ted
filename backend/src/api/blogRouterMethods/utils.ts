@@ -20,7 +20,7 @@ export type BlogBlock = {
     blockorder: number;
 };
 
-export function writeQuery(elements: BlogBlock[], title: string, id: number, tags: string[], headerImage: string){
+export function writeQuery(elements: BlogBlock[], title: string, id: number, tags: string[], headerImage: string, date: any){
     let query = `INSERT INTO blog (headerimage, tags, blockorder, islive, blogdate, blogid, blockcontent, blogtitle, blocktype) VALUES`
     const values = [];
     const params = [];
@@ -33,7 +33,7 @@ export function writeQuery(elements: BlogBlock[], title: string, id: number, tag
             JSON.stringify(tags),
             el.blockorder,
             true,
-            new Date(),
+            date ? date : new Date(),
             id,
             el.blockcontent,
             title,

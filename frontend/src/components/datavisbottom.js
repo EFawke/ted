@@ -16,7 +16,7 @@ class DataVisBottom extends React.Component {
                 {slots.length === 0 ? (
                     <Text size="2" color="gray">No slots allocated yet.</Text>
                 ) : (
-                    <Flex wrap="wrap" gap="2" align="end" height="200px">
+                    <Flex wrap="wrap" gap="2" align="end">
                         {slots.map((slot, index) => {
                             // const height = (slot.runs / maxRuns) * maxHeight;
                             const height = (slot.runs * 0.75)

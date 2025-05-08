@@ -11,7 +11,7 @@ export default async function createPost(reqBody: any, client: Client, id: numbe
         throw new Error("No Elements Added");
     }
 
-    const { query, params } = writeQuery(elements, title, id, tags, headerImage);
+    const { query, params } = writeQuery(elements, title, id, tags, headerImage, null);
 
     try {
         const res: QueryResult = await client.query(query, params);

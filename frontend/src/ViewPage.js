@@ -5,6 +5,7 @@ import axios from 'axios';
 import Header from './Header.js';
 import ReactMarkdown from 'react-markdown';
 import ScheduleDemo from './components/ScheduleDemo.js';
+import ScheduleDemoOptimized from './components/ScheduleDemoOptimized.js';
 import './css/App.css';
 
 function ViewPage() {
@@ -96,9 +97,17 @@ function ViewPage() {
                                     }}
                                 />
                             )}
-                            {element.blocktype === 'component' && (
-                                <ScheduleDemo />
-                            )}
+                            {element.blocktype === 'component' && (() => {
+                                switch (element.blockcontent) {
+                                    case 'ScheduleDemo':
+                                        return <ScheduleDemo />;
+                                    case 'ScheduleDemoOptimized':
+                                        return <ScheduleDemoOptimized />;
+                                    default:
+                                        return null;
+                                }
+                            })()}
+
                         </div>
                     ))}
                 </Flex>

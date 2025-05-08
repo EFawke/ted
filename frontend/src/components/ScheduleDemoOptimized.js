@@ -3,7 +3,7 @@ import DataVisTop from "./datavistop";
 import DataVisBottom from "./datavisbottom";
 import React from "react";
 
-class ScheduleDemo extends React.Component {
+class ScheduleDemoOptimized extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -21,6 +21,7 @@ class ScheduleDemo extends React.Component {
             slots: [],
             status: "Ready",
             percentageStep: 0,
+            iterationCounter: 0,
             stepDelay: null,
             lastInputNumSlots: 15,
             isPaused: false,
@@ -40,22 +41,15 @@ class ScheduleDemo extends React.Component {
     };
 
     runScheduleAlgorithm = async (numAboveMean, sortedReactions, meanRuns, slots) => {
+        this.setState(prevState => ({
+            iterationCounter: prevState.iterationCounter + 1
+        }));
         this.setState({ status: "Running...", isPaused: false });
-
-        if (slots > 1000) {
-            slots = 1000;
-        }
-
-        if (slots <= sortedReactions.length) {
-            console.log("skipping work")
-            this.setState({ slots: sortedReactions, numSlots: 0, status: "Done", isPaused: false });
-            return;
-        }
-
         this.setState({ percentageStep: numAboveMean });
-
         let schedule = [];
         let availableSlots = slots;
+
+        // console.log(this.state.numSlots)
         const meanRunsPlusX = meanRuns + numAboveMean;
 
         for (let i = 0; i < sortedReactions.length; i++) {
@@ -101,38 +95,70 @@ class ScheduleDemo extends React.Component {
 
         if (availableSlots >= 0) {
             this.setState({ status: "Done", isPaused: false });
-            return schedule;
+            return { success: true, schedule };
         } else {
-            return this.runScheduleAlgorithm(numAboveMean + 1, sortedReactions, meanRuns, slots);
+            return { success: false, schedule: null };
         }
     };
 
-    // scheduleReactions = (reactions, slots) => {
-    //     let schedule = false;
+    scheduleReactions = async (reactions, slots) => {
+        if (slots > 1000) {
+            slots = 1000; // Safety cap
+        }
 
-    //     if (slots > 1000) {
-    //         slots = 1000;
-    //     }
+        if (slots <= reactions.length) {
+            this.setState({ slots: reactions, numSlots: 0, status: "Done", isPaused: false });
+            return;
+        }
 
-    //     if (slots <= reactions.length) {
-    //         console.log("skipping work")
-    //         this.setState({ slots: reactions, numSlots: 0, status: "Done", isPaused: false });
-    //         return;
-    //     }
+        // console.log(`running schedule reactions with ${slots} slots active!`)
 
-    //     const sortedReactions = reactions.sort((a, b) => a.runs - b.runs)
-    //     const reacRunsSum = sortedReactions.reduce((acc, curr) => acc + Number(curr.runs), 0);
-    //     const meanRuns = Math.round(reacRunsSum / slots)
-    //     const numAboveMean = 0;
+        const sortedReactions = reactions.sort((a, b) => a.runs - b.runs);
+        const reacRunsSum = sortedReactions.reduce((acc, curr) => acc + Number(curr.runs), 0);
+        const meanRuns = Math.ceil(reacRunsSum / slots);
 
-    //     if (slots <= sortedReactions.length) {
-    //         return sortedReactions;
-    //     } else {
-    //         schedule = this.runScheduleAlgorithm(numAboveMean + 1, sortedReactions, meanRuns, slots);
-    //     }
+        let numAboveMean = 1;
+        let lastFail = 0;
+        let lastSuccess = null;
 
-    //     return schedule;
-    // }
+        // Phase 1: Exponential Search
+        while (true) {
+            const { success } = await this.runScheduleAlgorithm(numAboveMean, sortedReactions, meanRuns, slots);
+
+            if (success) {
+                lastSuccess = numAboveMean;
+                break;
+            } else {
+                lastFail = numAboveMean;
+                numAboveMean *= 2;
+
+                // Safety: Don't go beyond reacRunsSum
+                if (numAboveMean > reacRunsSum) {
+                    lastSuccess = reacRunsSum;
+                    break;
+                }
+            }
+        }
+
+        // Phase 2: Binary Search between lastFail and lastSuccess
+        let low = lastFail;
+        let high = lastSuccess;
+        let bestSchedule = null;
+
+        while (low <= high) {
+            const mid = Math.floor((low + high) / 2);
+            const { success, schedule } = await this.runScheduleAlgorithm(mid, sortedReactions, meanRuns, slots);
+
+            if (success) {
+                bestSchedule = schedule;
+                high = mid - 1; // Try to find even smaller numAboveMean
+            } else {
+                low = mid + 1;
+            }
+        }
+
+        return bestSchedule;
+    }
 
     applySchedule = async () => {
         if (this.state.status === "Done") {
@@ -140,38 +166,28 @@ class ScheduleDemo extends React.Component {
                 status: "Ready",
                 slots: [],
                 percentageStep: 0,
-                numSlots: this.state.lastInputNumSlots
+                numSlots: this.state.lastInputNumSlots,
+                iterationCounter: 0
             });
             return;
         }
 
         let { defaultReactions, numSlots } = this.state;
 
-        const reactions = [...defaultReactions].sort((a, b) => a.runs - b.runs);
-        const reacRunsSum = reactions.reduce((acc, curr) => acc + Number(curr.runs), 0);
-        const meanRuns = Math.ceil(reacRunsSum / numSlots);
-
-        const numAboveMean = 0;
-
         if (Number(numSlots) < defaultReactions.length) {
-            console.log("HEY")
+            // console.log("HEY")
             const updatedSlotCount = defaultReactions.length;
             this.setState({ numSlots: updatedSlotCount }, async () => {
-                console.log(numSlots)
-                console.log("see if it's updated?")
-                // await this.scheduleReactions(defaultReactions, this.state.numSlots);
-                this.runScheduleAlgorithm(numAboveMean, reactions, meanRuns, this.state.numSlots);
-
+                // console.log(numSlots)
+                // console.log("see if it's updated?")
+                await this.scheduleReactions(defaultReactions, this.state.numSlots);
             });
         } else {
-            this.runScheduleAlgorithm(numAboveMean, reactions, meanRuns, numSlots);
+            await this.scheduleReactions(defaultReactions, numSlots);
+
         }
+    };
 
-
-        // console.log(numSlots);
-
-        // this.runScheduleAlgorithm(numAboveMean, reactions, meanRuns, numSlots);
-    }
 
     changeNumSlots = (newNumSlots) => {
         this.setState({ numSlots: newNumSlots });
@@ -182,11 +198,11 @@ class ScheduleDemo extends React.Component {
         this.setState({ stepDelay: newStepDelay });
     }
 
-    handleMainButtonClick = () => {
+    handleMainButtonClick = async () => {
         if (this.state.status === "Running...") {
             this.togglePause();
         } else {
-            this.applySchedule();
+            await this.applySchedule();
         }
     };
 
@@ -211,6 +227,7 @@ class ScheduleDemo extends React.Component {
                                 <TextField.Root
                                     type="number"
                                     placeholder="0"
+                                    // value={this.state.stepDelay}
                                     onChange={(e) => this.changeStepDelay(Number(e.target.value))}
                                     size="2"
                                 >
@@ -240,7 +257,7 @@ class ScheduleDemo extends React.Component {
 
                     <Flex direction="column" gap="1">
                         <Text size="2" weight="bold">Step:</Text>
-                        <Code size="2" weight="bold">{this.state.percentageStep}</Code>
+                        <Code size="2" weight="bold">{this.state.iterationCounter}</Code>
                     </Flex>
                     <Button onClick={this.handleMainButtonClick}>
                         {this.getButtonText()}
@@ -253,4 +270,4 @@ class ScheduleDemo extends React.Component {
     }
 }
 
-export default ScheduleDemo;
+export default ScheduleDemoOptimized;
