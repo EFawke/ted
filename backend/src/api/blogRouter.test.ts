@@ -22,6 +22,7 @@ const id = 1;
 const title = 'A strange blog post';
 const tags = ["Something", "Great", "Is", "Going", "On"];
 const headerImage = "https://res.cloudinary.com/dlkofkgto/image/upload/v1744931924/your_blog_uploads/yywcvoxdyzrqbxqm197s.jpg";
+const date = null;
 
 const reqBody = {
     elements: elements,
@@ -117,7 +118,7 @@ test('deletes a post', async () => {
 
 // Write Query
 test('Writes an insert statement for a blog post, returns a query and an array of params', () => {
-    const result = writeQuery(elements, title, id, tags, headerImage)
+    const result = writeQuery(elements, title, id, tags, headerImage, date)
     expect(result.query).toBe('INSERT INTO blog (headerimage, tags, blockorder, islive, blogdate, blogid, blockcontent, blogtitle, blocktype) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9), ($10, $11, $12, $13, $14, $15, $16, $17, $18)')
     expect(result.params).toEqual([
         'https://res.cloudinary.com/dlkofkgto/image/upload/v1744931924/your_blog_uploads/yywcvoxdyzrqbxqm197s.jpg',
