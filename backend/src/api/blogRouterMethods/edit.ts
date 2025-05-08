@@ -19,8 +19,6 @@ export default async function editPost(reqBody: any, client: Client) {
 
     const date = await getOriginalDate(id, client);
 
-    console.log(date)
-
     const { query, params } = writeQuery(elements, title, id, tags, headerImage, date);
     await client.query(`DELETE FROM blog WHERE blogid = ${id}`);
 
