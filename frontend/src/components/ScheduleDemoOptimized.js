@@ -256,11 +256,12 @@ class ScheduleDemoOptimized extends React.Component {
                         <Text size="2" weight="bold">Status:</Text>
                         <Code size="2" weight="bold">{this.state.status}</Code>
                     </Flex>
-
+                    <Tooltip content="Number of potential schedules searched">
                     <Flex direction="column" gap="1">
                         <Text size="2" weight="bold">Step:</Text>
                         <Code size="2" weight="bold">{this.state.iterationCounter}</Code>
                     </Flex>
+                    </Tooltip>
                     <Button onClick={this.handleMainButtonClick}>
                         {this.getButtonText()}
                     </Button>
