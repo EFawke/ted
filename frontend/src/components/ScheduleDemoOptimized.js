@@ -17,13 +17,13 @@ class ScheduleDemoOptimized extends React.Component {
                 { name: "Scandium Metallofullerene", runs: 609 },
                 { name: "Carbon-86 Epoxy Resin", runs: 834 },
             ],
-            numSlots: 15,
+            numSlots: 13,
             slots: [],
             status: "Ready",
             percentageStep: 0,
             iterationCounter: 0,
             stepDelay: null,
-            lastInputNumSlots: 15,
+            lastInputNumSlots: 13,
             isPaused: false,
         }
         this.resumeResolver = null;
@@ -49,7 +49,6 @@ class ScheduleDemoOptimized extends React.Component {
         let schedule = [];
         let availableSlots = slots;
 
-        // console.log(this.state.numSlots)
         const meanRunsPlusX = meanRuns + numAboveMean;
 
         for (let i = 0; i < sortedReactions.length; i++) {
@@ -111,8 +110,6 @@ class ScheduleDemoOptimized extends React.Component {
             return;
         }
 
-        // console.log(`running schedule reactions with ${slots} slots active!`)
-
         const sortedReactions = reactions.sort((a, b) => a.runs - b.runs);
         const reacRunsSum = sortedReactions.reduce((acc, curr) => acc + Number(curr.runs), 0);
         const meanRuns = Math.ceil(reacRunsSum / slots);
@@ -121,8 +118,7 @@ class ScheduleDemoOptimized extends React.Component {
         let lastFail = 0;
         let lastSuccess = null;
 
-        // Phase 1: Exponential Search
-        while (true) {
+        while (true) { // exponential
             const { success } = await this.runScheduleAlgorithm(numAboveMean, sortedReactions, meanRuns, slots);
 
             if (success) {
@@ -132,7 +128,6 @@ class ScheduleDemoOptimized extends React.Component {
                 lastFail = numAboveMean;
                 numAboveMean *= 2;
 
-                // Safety: Don't go beyond reacRunsSum
                 if (numAboveMean > reacRunsSum) {
                     lastSuccess = reacRunsSum;
                     break;
@@ -140,24 +135,34 @@ class ScheduleDemoOptimized extends React.Component {
             }
         }
 
-        // Phase 2: Binary Search between lastFail and lastSuccess
-        let low = lastFail;
+        let bestSchedule = null
+        let low = lastFail
         let high = lastSuccess;
-        let bestSchedule = null;
 
-        while (low <= high) {
+        while (low < high) {
             const mid = Math.floor((low + high) / 2);
-            const { success, schedule } = await this.runScheduleAlgorithm(mid, sortedReactions, meanRuns, slots);
+            const { success, schedule } = await this.runScheduleAlgorithm(
+                mid, sortedReactions, meanRuns, slots
+            );
 
             if (success) {
-                bestSchedule = schedule;
-                high = mid - 1; // Try to find even smaller numAboveMean
+                bestSchedule = schedule;  // record this working schedule
+                high = mid;               // shrink from above, keeping mid in play
             } else {
-                low = mid + 1;
+                low = mid + 1;            // discard mid and everything below
             }
         }
 
-        return bestSchedule;
+        // At this point low === high: that's the smallest value that *could* succeed.
+        // We need to run it one last time to be sure and to grab the schedule.
+        const { success: finalOk, schedule: finalSched } =
+            await this.runScheduleAlgorithm(low, sortedReactions, meanRuns, slots);
+
+        if (finalOk) {
+            bestSchedule = finalSched;
+        } else {
+            // console.log(`✘ final check at ${low} failed — no valid schedule`);
+        }
     }
 
     applySchedule = async () => {
@@ -175,11 +180,8 @@ class ScheduleDemoOptimized extends React.Component {
         let { defaultReactions, numSlots } = this.state;
 
         if (Number(numSlots) < defaultReactions.length) {
-            // console.log("HEY")
             const updatedSlotCount = defaultReactions.length;
             this.setState({ numSlots: updatedSlotCount }, async () => {
-                // console.log(numSlots)
-                // console.log("see if it's updated?")
                 await this.scheduleReactions(defaultReactions, this.state.numSlots);
             });
         } else {
