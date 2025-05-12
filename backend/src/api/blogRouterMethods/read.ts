@@ -13,7 +13,7 @@ export async function readAll(client: Client) {
         blogtitle
     FROM blog
     WHERE blockorder = 0
-    ORDER BY blogdate;`
+    ORDER BY blogdate DESC;`
     try {
         const res: QueryResult = await client.query(query);
         return res.rows || [];
