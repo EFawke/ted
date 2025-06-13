@@ -6,6 +6,7 @@ import Links from "./links.js";
 import BlogNav from "./blogNav.js";
 import EditPage from './EditPage.js';
 import ViewPage from './ViewPage.js';
+import Bio from './Bio.js'
 import Header from './Header.js';
 import { useEffect } from 'react';
 import ReactGA from "react-ga4";
@@ -51,6 +52,7 @@ function Home() {
         <Section id="right_page">
           <Flex gap="4" direction="column">
             <Header />
+            {/* <Bio/> */}
             <BlogNav isAdmin={isAdmin} />
           </Flex>
         </Section>
